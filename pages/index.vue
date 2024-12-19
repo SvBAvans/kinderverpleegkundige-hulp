@@ -1,1 +1,3 @@
-<template>Hello World</template>
+<template>
+    <AppHeader />
+</template>
