@@ -1,8 +1,8 @@
 <template>
   <div class="menu-container">
     <div class="header d-flex justify-content-start align-items-center px-3 py-2">
-      <div class="icon-circle d-flex align-items-center justify-content-center" @click="toggleMenu">
-        <span>H</span>
+      <div class="d-flex align-items-center justify-content-center" @click="toggleMenu">
+        <Icon name="charm:menu-hamburger" size="50px" />
       </div>
     </div>
 
