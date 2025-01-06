@@ -6,6 +6,37 @@ const patient = ref({
   dateOfBirth: null,
   diseaseProfile: ""
 });
+
+const isFormValid = computed(() => {
+  return (
+    patient.value.firstName.trim() !== "" &&
+    patient.value.lastName.trim() !== "" &&
+    patient.value.patientId.trim() !== "" &&
+    patient.value.dateOfBirth !== null &&
+    patient.value.diseaseProfile.trim() !== ""
+  );
+});
+
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+// onMounted(() => {
+//   'use strict';
+
+//   // Fetch all the forms we want to apply custom Bootstrap validation styles to
+//   const forms = document.querySelectorAll('.needs-validation') as NodeListOf<HTMLFormElement>;
+
+//   // Loop over them and prevent submission
+//   Array.from(forms).forEach(form => {
+//     form.addEventListener('submit', event => {
+//       if (!form.checkValidity()) {
+//         event.preventDefault();
+//         event.stopPropagation();
+//       }
+
+//       form.classList.add('was-validated');
+//     }, false);
+//   });
+// });
+
 </script>
 
 <template>
@@ -23,28 +54,45 @@ const patient = ref({
 
     <hr />
 
-    <div class="ms-4 me-4 mt-4">
-        <div class="mt-3">
-            <label for="inputlg">Voornaam:</label>
-            <input class="form-control input-lg col-12 border border-secondary" id="inputlg" type="text" v-model="patient.firstName" placeholder="Voornaam"  />
+    <form class="was-validated" novalidate>
+        <div class="ms-4 me-4 mt-4">
+            <div class="mt-3">
+                <label for="firstName" class="form-label">Voornaam:</label>
+                <input class="form-control input-lg col-12 border border-secondary" id="firstName" type="text" v-model="patient.firstName" placeholder="Voornaam" required  />
+                <div class="invalid-feedback">
+                    Voornaam is verplicht
+                </div>
+            </div>
+            <div class="mt-3">
+                <label for="lastName">Achternaam:</label>
+                <input class="form-control input-lg col-12 border border-secondary" id="lastName" type="text" v-model="patient.lastName" placeholder="Achternaam" required  />
+                <div class="invalid-feedback">
+                    Achternaam is verplicht
+                </div>
+            </div>    
+            <div class="mt-3">
+                <label for="patientID">Patient-ID:</label>
+                <input class="form-control input-lg col-12 border border-secondary" id="patientID" type="text" v-model="patient.patientId" placeholder="Patient-ID" required  />
+                <div class="invalid-feedback">
+                    Patient ID is verplicht
+                </div>
+            </div>
+            <div class="mt-3">
+                <label for="dateOfBirth">Geboortedatum:</label>
+                <input class="form-control input-lg col-12 border border-secondary" id="dateOfBirth" type="date" v-model="patient.dateOfBirth" placeholder="Geboortedatum" required  />
+                <div class="invalid-feedback">
+                    Geboortedatum is verplicht
+                </div>
+            </div>
+            <div class="mt-3">
+                <label>Ziektebeeld:</label>
+                <textarea class="col-12" rows="5" v-model="patient.diseaseProfile" placeholder="Ziektebeeld" required></textarea>
+                <div class="invalid-feedback">
+                    Ziektebeeld is verplicht
+                </div>
+            </div>
+            <button class="btn btn-secondary btn-lg mt-3 col-12" type="submit" :disabled="!isFormValid">Afronden</button>
         </div>
-        <div class="mt-3">
-            <label for="inputlg">Achternaam:</label>
-            <input class="form-control input-lg col-12 border border-secondary" id="inputlg" type="text" v-model="patient.lastName" placeholder="Achternaam"  />
-        </div>    
-        <div class="mt-3">
-            <label for="inputlg">Patient-ID:</label>
-            <input class="form-control input-lg col-12 border border-secondary" id="inputlg" type="text" v-model="patient.patientId" placeholder="Patient-ID"  />
-        </div>
-        <div class="mt-3">
-            <label for="inputlg">Geboortedatum:</label>
-            <input class="form-control input-lg col-12 border border-secondary" id="inputlg" type="date" v-model="patient.dateOfBirth" placeholder="Geboortedatum"  />
-        </div>
-        <div class="mt-3">
-            <label>Ziektebeeld:</label>
-            <textarea class="col-12" rows="5" v-model="patient.diseaseProfile" placeholder="Ziektebeeld"></textarea>
-        </div>
-        <button class="btn btn-secondary btn-lg mt-3 col-12">Afronden</button>
-    </div>
+    </form>
 </template>
   
