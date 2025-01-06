@@ -11,7 +11,7 @@
       <div class="card-body">
         <div class="row align-items-center">
           <div class="col-6 d-flex flex-column justify-content-center">
-            <p class="mb-1"><strong>[name]</strong></p>
+            <p class="mb-1"><strong>[name1]</strong></p>
             <p class="text-muted mb-0">[dob]</p>
           </div>
 
@@ -27,7 +27,7 @@
       <div class="card-body">
         <div class="row align-items-center">
           <div class="col-6 d-flex flex-column justify-content-center">
-            <p class="mb-1"><strong>[name]</strong></p>
+            <p class="mb-1"><strong>[name2]</strong></p>
             <p class="text-muted mb-0">[dob]</p>
           </div>
 
