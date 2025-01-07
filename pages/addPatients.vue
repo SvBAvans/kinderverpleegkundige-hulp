@@ -12,12 +12,12 @@
         <div class="card-body">
           <div class="row">
             <div class="col-6 d-flex flex-column justify-content-center">
-              <p class="mb-1"><strong>{{ patient.name }}</strong></p>
-              <p class="text-muted mb-0">{{ patient.dob }}</p>
+              <p class="mb-1"><strong>{{ patient.firstName }}</strong></p>
+              <p class="text-muted mb-0">{{ patient.dateOfBirth }}</p>
             </div>
 
             <div class="col-6 d-flex align-items-center justify-content-end">
-              <p class="me-2 mb-0">kamer: {{ patient.roomNumber }}</p>
+              <p class="me-2 mb-0">kamer: [roomnr]</p>
               <i
                 class="bi fs-3"
                 :class="addedPatients.has(patient.id) ? 'bi-check-circle' : 'bi-plus'"
@@ -39,31 +39,17 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 
-interface Patient {
-  id: number;
-  name: string;
-  dob: string;
-  roomNumber: number;
-}
-
 export default defineComponent({
   name: 'PatientSearch',
-  setup() {
-    const patients = ref<Patient[]>([
-      { id: 1, name: 'John Doe', dob: '2016-05-14', roomNumber: 101 },
-      { id: 2, name: 'Jane Smith', dob: '2016-09-23', roomNumber: 102 },
-      { id: 3, name: 'Alice Johnson', dob: '2008-01-15', roomNumber: 103 },
-      { id: 4, name: 'Bob Brown', dob: '2013-06-30', roomNumber: 104 },
-      { id: 5, name: 'Ralph van der Neuten', dob: '2012-08-29', roomNumber: 105 },
-      { id: 6, name: 'Ben Dover', dob: '2015-04-20', roomNumber: 106 },
-      { id: 7, name: 'Akkie Voetbal', dob: '2014-06-09', roomNumber: 107 },
-    ]);
+  async setup() {
 
-    const addedPatients = ref<Set<number>>(new Set());
+    const addedPatients = ref<Set<string>>(new Set());
     const searching = ref<string>('');
 
+    const { data: patient } = await useFetch(`/api/patients`)
+
     // delete/add patient to list
-    const togglePatient = (id: number) => {
+    const togglePatient = (id: string) => {
       if (addedPatients.value.has(id)) {
         addedPatients.value.delete(id);
       } else {
@@ -77,16 +63,17 @@ export default defineComponent({
     };
 
     const filteredPatients = computed(() => {
-      return patients.value.filter((patient) => {
+      return patient.value?.filter((patientt) => {
         const query = searching.value.toLowerCase();
         return (
-          patient.name.toLowerCase().includes(query) || patient.roomNumber.toString().includes(query)
+          patientt.firstName.toLowerCase().includes(query)
+          // || patient.roomNumber.toString().includes(query)
         );
       });
     });
 
     return {
-      patients,
+      // patients,
       addedPatients,
       searching,
       togglePatient,
