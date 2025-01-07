@@ -1,11 +1,13 @@
 <script setup lang="ts">
 const menuVisible = ref(false);
+const { signOut } = useAuth();
 
 const toggleMenu = () => {
   menuVisible.value = !menuVisible.value;
 };
 
 const logout = () => {
+  signOut();
   toggleMenu();
 };
 </script>

@@ -9,6 +9,10 @@ export default defineNuxtConfig({
     authSecret: "",
   },
 
+  auth: {
+    globalAppMiddleware: true,
+  },
+
   veeValidate: {
     autoImports: true,
     componentNames: {

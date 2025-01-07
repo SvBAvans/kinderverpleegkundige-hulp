@@ -2,7 +2,10 @@
 import { object, string } from "zod";
 
 definePageMeta({
-  layout: "none",
+  layout: false,
+  auth: {
+    unauthenticatedOnly: true,
+  },
 });
 
 const { signIn, getSession } = useAuth();
