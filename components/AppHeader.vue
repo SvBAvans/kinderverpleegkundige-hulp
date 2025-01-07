@@ -1,3 +1,22 @@
+<script>
+export default {
+  data() {
+    return {
+      menuVisible: false,
+    };
+  },
+  methods: {
+    toggleMenu() {
+      this.menuVisible = !this.menuVisible;
+    },
+    logout() {
+      alert('Logging out...');
+      this.toggleMenu();
+    },
+  },
+};
+</script>
+
 <template>
   <div class="menu-container">
     <div class="header d-flex justify-content-start align-items-center px-3 py-2">
@@ -24,25 +43,6 @@
     </transition>
   </div>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      menuVisible: false,
-    };
-  },
-  methods: {
-    toggleMenu() {
-      this.menuVisible = !this.menuVisible;
-    },
-    logout() {
-      alert('Logging out...');
-      this.toggleMenu();
-    },
-  },
-};
-</script>
 
 <style scoped>
 .menu-container {
