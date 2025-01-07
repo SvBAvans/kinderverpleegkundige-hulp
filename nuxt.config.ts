@@ -10,6 +10,7 @@ export default defineNuxtConfig({
   },
 
   auth: {
+    baseURL: process.env.URL ? `https://${process.env.URL}/api/auth` : undefined,
     provider: { type: "authjs" },
     globalAppMiddleware: true,
   },
