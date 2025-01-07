@@ -7,7 +7,6 @@ const toggleMenu = () => {
 };
 
 const logout = () => {
-  alert('Logging out...');
   toggleMenu();
 };
 </script>
