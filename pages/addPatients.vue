@@ -46,7 +46,12 @@ const filteredPatients = computed(() => {
 
             <div class="col-6 d-flex align-items-center justify-content-end">
               <p class="me-2 mb-0">kamer: [roomnr]</p>
-              <i class="bi fs-3" :class="addedPatients.has(patient.id) ? 'bi-check-circle' : 'bi-plus'" :style="{ color: addedPatients.has(patient.id) ? '#10b981' : '#3b82f6' }" @click="togglePatient(patient.id)"></i>
+              <Icon
+                :name="addedPatients.has(patient.id) ? 'bi:check-circle' : 'bi:plus'"
+                class="fs-3 bi"
+                :style="{ color: addedPatients.has(patient.id) ? '#10b981' : '#3b82f6' }"
+                @click="togglePatient(patient.id)"
+              ></Icon>
             </div>
           </div>
         </div>
