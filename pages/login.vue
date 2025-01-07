@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { object, string } from "zod";
 
+const { signIn, getSession } = useAuth();
+const route = useRoute();
+const router = useRouter();
+const callback = route.query.callback as string | undefined;
+let signInError = ref();
+
 const schema = toTypedSchema(
   object({
-    email: string().min(1, { message: "Email is verplicht" }).email({ message: "Ongeldig email" }),
-    password: string().min(1, { message: "Wachtwoord is verplicht" }),
+    email: string({ required_error: "Email is verplicht" }).nonempty({ message: "Email is verplicht" }).email({ message: "Ongeldig email" }),
+    password: string({ required_error: "Wachtwoord is verplicht" }).nonempty({ message: "Wachtwoord is verplicht" }),
   })
 );
 
@@ -15,9 +21,18 @@ const { handleSubmit, errors } = useForm({
 const { value: email } = useField("email");
 const { value: password } = useField("password");
 
-const onSubmit = handleSubmit((values) => {
-  alert("Submitted");
-  console.log(values);
+const onSubmit = handleSubmit(async (values) => {
+  const result: any = await signIn("credentials", { email: values.email, password: values.password, callbackUrl: callback, redirect: false });
+  if (result.error) {
+    switch (result.error) {
+      case "CredentialsSignin":
+        signInError.value = "Email of wachtwoord onjuist";
+        break;
+    }
+    return;
+  } else {
+    navigateTo(callback);
+  }
 });
 </script>
 
@@ -33,6 +48,11 @@ const onSubmit = handleSubmit((values) => {
         <input class="form-control input-lg col-12 border border-secondary" :class="{ 'is-invalid': errors.password }" name="password" type="password" v-model="password" placeholder="Wachtwoord" />
         <div v-if="errors.password" class="invalid-feedback">{{ errors.password }}</div>
       </div>
+
+      <div v-if="signInError" class="alert alert-danger mt-3">
+        {{ signInError }}
+      </div>
+
       <button class="login-button btn btn-secondary btn-lg mt-3 col-12" type="submit">Login</button>
     </form>
   </div>

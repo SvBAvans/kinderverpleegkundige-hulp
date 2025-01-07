@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   compatibilityDate: "2025-01-07",
   devtools: { enabled: true },
-  modules: ["@nuxt/icon", "@vee-validate/nuxt"],
+  modules: ["@nuxt/icon", "@vee-validate/nuxt", "@sidebase/nuxt-auth"],
 
   veeValidate: {
     autoImports: true,
