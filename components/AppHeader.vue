@@ -1,19 +1,14 @@
-<script>
-export default {
-  data() {
-    return {
-      menuVisible: false,
-    };
-  },
-  methods: {
-    toggleMenu() {
-      this.menuVisible = !this.menuVisible;
-    },
-    logout() {
-      alert('Logging out...');
-      this.toggleMenu();
-    },
-  },
+<script setup lang="ts">
+
+const menuVisible = ref(false);
+
+const toggleMenu = () => {
+  menuVisible.value = !menuVisible.value;
+};
+
+const logout = () => {
+  alert('Logging out...');
+  toggleMenu();
 };
 </script>
 
