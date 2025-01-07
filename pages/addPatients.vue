@@ -1,10 +1,36 @@
+<script setup lang="ts">
+const addedPatients = ref<Set<string>>(new Set());
+const search = ref<string>("");
+
+const { data: patient } = await useFetch(`/api/patients`);
+
+// delete/add patient to list
+const togglePatient = (id: string) => {
+  if (addedPatients.value.has(id)) {
+    addedPatients.value.delete(id);
+  } else {
+    addedPatients.value.add(id);
+  }
+};
+
+//in the console for now --  TODO: add to db
+const savePatients = () => {
+  console.log("Saved patients:", Array.from(addedPatients.value));
+};
+
+const filteredPatients = computed(() => {
+  return patient.value?.filter((patient: any) => {
+    const query = search.value.toLowerCase();
+    return patient.firstName.toLowerCase().includes(query);
+    // || patient.roomNumber.toString().includes(query)
+  });
+});
+</script>
+
 <template>
-  <header>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
-  </header>
-  <div class="container py-5 d-flex flex-column" style="min-height: 100vh;">
+  <div class="container py-5 d-flex flex-column" style="min-height: 100vh">
     <h2 class="text-center mb-4">Voeg patiënt toe</h2>
-    <input class="form-control mb-3" type="text" v-model="searching" placeholder="Search..." />
+    <input class="form-control mb-3" type="text" v-model="search" placeholder="Search..." />
     <hr />
 
     <div class="flex-grow-1 overflow-auto">
@@ -12,18 +38,15 @@
         <div class="card-body">
           <div class="row">
             <div class="col-6 d-flex flex-column justify-content-center">
-              <p class="mb-1"><strong>{{ patient.firstName }}</strong></p>
+              <p class="mb-1">
+                <strong>{{ patient.firstName }}</strong>
+              </p>
               <p class="text-muted mb-0">{{ patient.dateOfBirth }}</p>
             </div>
 
             <div class="col-6 d-flex align-items-center justify-content-end">
               <p class="me-2 mb-0">kamer: [roomnr]</p>
-              <i
-                class="bi fs-3"
-                :class="addedPatients.has(patient.id) ? 'bi-check-circle' : 'bi-plus'"
-                :style="{ color: addedPatients.has(patient.id) ? '#10b981' : '#3b82f6' }"
-                @click="togglePatient(patient.id)"
-              ></i>
+              <i class="bi fs-3" :class="addedPatients.has(patient.id) ? 'bi-check-circle' : 'bi-plus'" :style="{ color: addedPatients.has(patient.id) ? '#10b981' : '#3b82f6' }" @click="togglePatient(patient.id)"></i>
             </div>
           </div>
         </div>
@@ -35,54 +58,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
-
-export default defineComponent({
-  name: 'PatientSearch',
-  async setup() {
-
-    const addedPatients = ref<Set<string>>(new Set());
-    const searching = ref<string>('');
-
-    const { data: patient } = await useFetch(`/api/patients`)
-
-    // delete/add patient to list
-    const togglePatient = (id: string) => {
-      if (addedPatients.value.has(id)) {
-        addedPatients.value.delete(id);
-      } else {
-        addedPatients.value.add(id);
-      }
-    };
-
-    //in the console for now --  TODO: add to db
-    const savePatients = () => {
-      console.log('Saved patients:', Array.from(addedPatients.value));
-    };
-
-    const filteredPatients = computed(() => {
-      return patient.value?.filter((patientt) => {
-        const query = searching.value.toLowerCase();
-        return (
-          patientt.firstName.toLowerCase().includes(query)
-          // || patient.roomNumber.toString().includes(query)
-        );
-      });
-    });
-
-    return {
-      // patients,
-      addedPatients,
-      searching,
-      togglePatient,
-      savePatients,
-      filteredPatients,
-    };
-  },
-});
-</script>
 
 <style scoped>
 .container {
