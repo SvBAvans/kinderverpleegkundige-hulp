@@ -1,8 +1,23 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: "2024-11-01",
+  compatibilityDate: "2025-01-07",
   devtools: { enabled: true },
-  modules: ["@nuxt/icon"],
+
+  modules: ["@nuxt/icon", "@vee-validate/nuxt", "@sidebase/nuxt-auth"],
+
+  runtimeConfig: {
+    authSecret: "",
+  },
+
+  veeValidate: {
+    autoImports: true,
+    componentNames: {
+      Form: "VeeForm",
+      Field: "VeeField",
+      FieldArray: "VeeFieldArray",
+      ErrorMessage: "VeeErrorMessage",
+    },
+  },
 
   app: {
     head: {
