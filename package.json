@@ -12,11 +12,18 @@
   "dependencies": {
     "@nuxt/icon": "1.10.2",
     "@prisma/client": "^6.1.0",
+    "@sidebase/nuxt-auth": "0.10.0",
+    "@vee-validate/nuxt": "^4.15.0",
+    "@vee-validate/zod": "^4.15.0",
+    "bcrypt": "^5.1.1",
+    "next-auth": "~4.21.1",
     "nuxt": "^3.14.1592",
     "vue": "latest",
-    "vue-router": "latest"
+    "vue-router": "latest",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "prisma": "^6.1.0"
   }
 }
