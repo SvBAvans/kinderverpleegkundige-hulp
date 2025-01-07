@@ -4,6 +4,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxt/icon", "@vee-validate/nuxt", "@sidebase/nuxt-auth"],
 
+  runtimeConfig: {
+    authSecret: "",
+  },
+
   veeValidate: {
     autoImports: true,
     componentNames: {
