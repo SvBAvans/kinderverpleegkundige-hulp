@@ -16,6 +16,7 @@ const togglePatient = (id: string) => {
 //in the console for now --  TODO: add to db
 const savePatients = () => {
   console.log("Saved patients:", Array.from(addedPatients.value));
+  alert("Dienst aanmaken\n" + Array.from(addedPatients.value).join("\n"));
 };
 
 const filteredPatients = computed(() => {
