@@ -4,11 +4,11 @@
   </header>
   <div class="container py-5 d-flex flex-column" style="min-height: 100vh;">
     <h2 class="text-center mb-4">Voeg patiënt toe</h2>
-    <input class="form-control mb-3" type="text" placeholder="Search..." />
+    <input class="form-control mb-3" type="text" v-model="searching" placeholder="Search..." />
     <hr />
 
     <div class="flex-grow-1 overflow-auto">
-      <div v-for="patient in patients" :key="patient.id" class="card p-3 shadow-sm mb-3">
+      <div v-for="patient in filteredPatients" :key="patient.id" class="card p-3 shadow-sm mb-3">
         <div class="card-body">
           <div class="row">
             <div class="col-6 d-flex flex-column justify-content-center">
@@ -60,6 +60,7 @@ export default defineComponent({
     ]);
 
     const addedPatients = ref<Set<number>>(new Set());
+    const searching = ref<string>('');
 
     // delete/add patient to list
     const togglePatient = (id: number) => {
@@ -75,11 +76,22 @@ export default defineComponent({
       console.log('Saved patients:', Array.from(addedPatients.value));
     };
 
+    const filteredPatients = computed(() => {
+      return patients.value.filter((patient) => {
+        const query = searching.value.toLowerCase();
+        return (
+          patient.name.toLowerCase().includes(query) || patient.roomNumber.toString().includes(query)
+        );
+      });
+    });
+
     return {
       patients,
       addedPatients,
+      searching,
       togglePatient,
       savePatients,
+      filteredPatients,
     };
   },
 });
