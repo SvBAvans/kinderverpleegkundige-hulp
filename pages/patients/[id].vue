@@ -1,3 +1,8 @@
+<script setup>
+ const route = useRoute();
+    const { data: patient } = await useFetch(`/api/patients/${route.params.id}`)
+</script>
+
 <template>
     <div class="page-container">
         <header class="mb-4">
@@ -5,13 +10,15 @@
         </header>
 
         <div class="patient-header mb-3">
-            <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center" style="width: 60px; height: 60px;">FB</div>
+            <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center" style="width: 60px; height: 60px;">
+                {{ patient.firstName?.charAt(0) }}{{ patient.lastName?.charAt(0) }}
+            </div>
             <div>
-                <h2 class="h5 mb-1">Fabian Bakker</h2>
-                <p class="text-muted mb-0">Geboortedatum: 12-12-2012</p>
+                <h2 class="h5 mb-1">{{ patient.firstName }} {{ patient.lastName }}</h2>
+                <p class="text-muted mb-0">Geboortedatum: {{ new Date(patient.dateOfBirth).toISOString().split('T')[0] }}</p>
             </div>
         </div>
-
+ 
         <!-- <div class="mb-3">
             <p><strong>Isolatietype:</strong> Contactisolatie</p>
             <p><strong>Voedingswijze:</strong> Sonde</p>
@@ -21,7 +28,7 @@
 
         <section class="mb-3">
             <h3 class="h6">Ziektebeeld:</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum..</p>
+            <p>{{ patient.diseaseProfile }}</p>
         </section>
 
         <div class="divider"></div>
