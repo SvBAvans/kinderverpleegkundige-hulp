@@ -18,8 +18,6 @@ export default NuxtAuthHandler({
           return null;
         }
 
-        console.log("Checking credentials", credentials);
-
         const user = await usePrisma().user.findUnique({
           where: {
             email: credentials.email,
@@ -27,21 +25,15 @@ export default NuxtAuthHandler({
         });
 
         if (!user) {
-          console.log("No user found");
           createError({ statusCode: 400, statusMessage: "Email or password is invalid" });
           return null;
         }
 
-        console.log("User found", user);
-
-        console.log(`Comparing password ${credentials.password} with hash ${user.password_hash}`);
         const equal = await bcrypt.compare(credentials.password, user.password_hash);
         if (!equal) {
-          console.log("Doesn't match");
           createError({ statusCode: 400, statusMessage: "Email or password is invalid" });
           return null;
         }
-        console.log("Matches");
 
         return user;
       },
