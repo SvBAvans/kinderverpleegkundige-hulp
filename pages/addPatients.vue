@@ -1,14 +1,10 @@
 <template>
   <header>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
   </header>
   <div class="container py-5 d-flex flex-column" style="min-height: 100vh;">
     <h2 class="text-center mb-4">Voeg patiënt toe</h2>
-    <input
-      class="form-control mb-3"
-      type="text"
-      placeholder="Search..."
-    />
+    <input class="form-control mb-3" type="text" placeholder="Search..." />
     <hr />
 
     <div class="flex-grow-1 overflow-auto">
@@ -23,9 +19,10 @@
             <div class="col-6 d-flex align-items-center justify-content-end">
               <p class="me-2 mb-0">kamer: {{ patient.roomNumber }}</p>
               <i
-                class="bi bi-plus fs-3"
-                style="cursor: pointer;"
-                @click="addPatient(patient)"
+                class="bi fs-3"
+                :class="addedPatients.has(patient.id) ? 'bi-check-circle' : 'bi-plus'"
+                :style="{ color: addedPatients.has(patient.id) ? '#10b981' : '#3b82f6' }"
+                @click="togglePatient(patient.id)"
               ></i>
             </div>
           </div>
@@ -34,12 +31,7 @@
     </div>
 
     <div class="sticky-bottom">
-      <button
-        class="btn btn-primary w-100 rounded-pill shadow-lg"
-        @click="logSelectedPatients"
-      >
-        Voltooi
-      </button>
+      <button class="btn btn-primary w-100 rounded-pill shadow-lg" @click="savePatients">Voltooi</button>
     </div>
   </div>
 </template>
@@ -67,24 +59,27 @@ export default defineComponent({
       { id: 7, name: 'Akkie Voetbal', dob: '2014-06-09', roomNumber: 107 },
     ]);
 
-    const selectedPatients = ref<Patient[]>([]);
+    const addedPatients = ref<Set<number>>(new Set());
 
-    const addPatient = (patient: Patient) => {
-      if (!selectedPatients.value.find((p) => p.id === patient.id)) {
-        selectedPatients.value.push(patient);
-        console.log(`Patient added:`, patient);
+    // delete/add patient to list
+    const togglePatient = (id: number) => {
+      if (addedPatients.value.has(id)) {
+        addedPatients.value.delete(id);
+      } else {
+        addedPatients.value.add(id);
       }
     };
 
-    const logSelectedPatients = () => {
-      console.log('Selected patients:', selectedPatients.value);
+    //in the console for now --  TODO: add to db
+    const savePatients = () => {
+      console.log('Saved patients:', Array.from(addedPatients.value));
     };
 
     return {
       patients,
-      selectedPatients,
-      addPatient,
-      logSelectedPatients,
+      addedPatients,
+      togglePatient,
+      savePatients,
     };
   },
 });
@@ -105,7 +100,12 @@ input::placeholder {
 }
 
 .bi {
-  color: #3b82f6;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.bi:hover {
+  transform: scale(1.2);
 }
 
 button {
@@ -129,9 +129,5 @@ button:active {
   bottom: 0;
   background: white;
   padding-top: 10px;
-}
-
-.bi:hover {
-  color: #1d4ed8;
 }
 </style>
