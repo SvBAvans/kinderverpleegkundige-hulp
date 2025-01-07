@@ -22,7 +22,11 @@
 
             <div class="col-6 d-flex align-items-center justify-content-end">
               <p class="me-2 mb-0">kamer: {{ patient.roomNumber }}</p>
-              <i class="bi bi-plus fs-3"></i>
+              <i
+                class="bi bi-plus fs-3"
+                style="cursor: pointer;"
+                @click="addPatient(patient)"
+              ></i>
             </div>
           </div>
         </div>
@@ -30,7 +34,12 @@
     </div>
 
     <div class="sticky-bottom">
-      <button class="btn btn-primary w-100 rounded-pill shadow-lg">Voltooi</button>
+      <button
+        class="btn btn-primary w-100 rounded-pill shadow-lg"
+        @click="logSelectedPatients"
+      >
+        Voltooi
+      </button>
     </div>
   </div>
 </template>
@@ -48,8 +57,6 @@ interface Patient {
 export default defineComponent({
   name: 'PatientSearch',
   setup() {
-    // Dummy data --- later van de db 
-    // note: kamer zit niet in patient schema, maar is vgm gelinkt.
     const patients = ref<Patient[]>([
       { id: 1, name: 'John Doe', dob: '2016-05-14', roomNumber: 101 },
       { id: 2, name: 'Jane Smith', dob: '2016-09-23', roomNumber: 102 },
@@ -60,8 +67,24 @@ export default defineComponent({
       { id: 7, name: 'Akkie Voetbal', dob: '2014-06-09', roomNumber: 107 },
     ]);
 
+    const selectedPatients = ref<Patient[]>([]);
+
+    const addPatient = (patient: Patient) => {
+      if (!selectedPatients.value.find((p) => p.id === patient.id)) {
+        selectedPatients.value.push(patient);
+        console.log(`Patient added:`, patient);
+      }
+    };
+
+    const logSelectedPatients = () => {
+      console.log('Selected patients:', selectedPatients.value);
+    };
+
     return {
       patients,
+      selectedPatients,
+      addPatient,
+      logSelectedPatients,
     };
   },
 });
@@ -106,5 +129,9 @@ button:active {
   bottom: 0;
   background: white;
   padding-top: 10px;
+}
+
+.bi:hover {
+  color: #1d4ed8;
 }
 </style>
