@@ -5,10 +5,6 @@
 
 <template>
     <div class="page-container">
-        <header class="mb-4">
-            <h1 class="h4">Patient details</h1>
-        </header>
-
         <div class="patient-header mb-3">
             <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center" style="width: 60px; height: 60px;">
                 {{ patient.firstName?.charAt(0) }}{{ patient.lastName?.charAt(0) }}
@@ -18,11 +14,6 @@
                 <p class="text-muted mb-0">Geboortedatum: {{ new Date(patient.dateOfBirth).toISOString().split('T')[0] }}</p>
             </div>
         </div>
- 
-        <!-- <div class="mb-3">
-            <p><strong>Isolatietype:</strong> Contactisolatie</p>
-            <p><strong>Voedingswijze:</strong> Sonde</p>
-        </div> -->
 
         <div class="divider"></div>
 
