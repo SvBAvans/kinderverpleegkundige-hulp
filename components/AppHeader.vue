@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const menuVisible = ref(false);
 
 const toggleMenu = () => {
@@ -41,7 +40,7 @@ const logout = () => {
 <style scoped>
 .menu-container {
   width: 100%;
-  height: 100vh;
+  /* height: 100vh; */
   background-color: #fff;
   display: flex;
   flex-direction: column;

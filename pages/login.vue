@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { object, string } from "zod";
 
+definePageMeta({
+  layout: "none",
+});
+
 const { signIn, getSession } = useAuth();
 const route = useRoute();
 const router = useRouter();
