@@ -1,42 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: "2025-01-07",
+  compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
-
-  modules: ["@nuxt/icon", "@vee-validate/nuxt", "@sidebase/nuxt-auth"],
-
-  runtimeConfig: {
-    authSecret: "",
-  },
-
-  auth: {
-    globalAppMiddleware: true,
-  },
-
-  veeValidate: {
-    autoImports: true,
-    componentNames: {
-      Form: "VeeForm",
-      Field: "VeeField",
-      FieldArray: "VeeFieldArray",
-      ErrorMessage: "VeeErrorMessage",
-    },
-  },
-
-  app: {
-    head: {
-      link: [
-        {
-          rel: "stylesheet",
-          href: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css",
-        },
-      ],
-      script: [
-        {
-          src: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js",
-          tagPosition: "bodyClose",
-        },
-      ],
-    },
-  },
+  css: ["~/node_modules/bootstrap/dist/css/bootstrap.min.css"],
+  plugins: [{ src: "~/plugins/bootstrap.client.js", mode: "client" }],
+  modules: ["@nuxt/icon"],
 });
