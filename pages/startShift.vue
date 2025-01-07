@@ -4,7 +4,7 @@
       <h2 class="text-center mb-1">Welkom,</h2>
       <h5 class="text-center">[naam]</h5>
       <div class="mb-3">
-        <button class="btn btn-primary w-100 mt-4">Start dienst</button>
+        <NuxtLink to="/addPatients" class="btn btn-primary w-100 mt-4">Start dienst</NuxtLink>
       </div>
     </div>
   </div>
