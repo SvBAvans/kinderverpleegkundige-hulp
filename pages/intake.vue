@@ -4,9 +4,9 @@ import { object, string } from "zod";
 import type { FetchError } from "ofetch";
 import type { Patient } from "@prisma/client";
 
-definePageMeta({
-  middleware: "sidebase-auth",
-});
+// definePageMeta({
+//   middleware: "sidebase-auth",
+// });
 
 const errorMessage = ref("");
 const error = ref(false);
