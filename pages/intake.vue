@@ -29,7 +29,7 @@ const { value: firstName } = useField("firstName");
 const { value: lastName } = useField("lastName");
 const { value: patientId } = useField("patientId");
 const { value: dateOfBirth } = useField("dateOfBirth");
-const { value: diseaseProfile } = useField("diseaseProfile");
+const { value: diseaseProfile } = useField<string>("diseaseProfile");
 
 async function createPatient(values: any) {
   values.dateOfBirth = new Date(values.dateOfBirth);
