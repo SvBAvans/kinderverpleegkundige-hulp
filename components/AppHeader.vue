@@ -10,6 +10,8 @@ const logout = () => {
   signOut();
   toggleMenu();
 };
+
+const { data: patients } = await useFetch("/api/patients");
 </script>
 
 <template>
@@ -23,10 +25,9 @@ const logout = () => {
     <transition name="slide">
       <div v-if="menuVisible" class="fullscreen-menu">
         <ul class="menu-list px-4">
-          <li class="menu-item py-3">Overzicht kamers</li>
-          <li class="menu-item py-3">Overzicht dienst</li>
-          <li class="menu-item py-3">Settings</li>
-          <li class="menu-item py-3">Hulp</li>
+          <!-- <li class="menu-item py-3">Overzicht kamers</li> -->
+          <li class="menu-item py-3"><NuxtLink to="/" @click="toggleMenu">Start dienst</NuxtLink></li>
+          <li class="menu-item py-3"><NuxtLink :to="`/patients/${patients![0].id}`" @click="toggleMenu">Patient Details</NuxtLink></li>
         </ul>
 
         <div class="logout-section">
@@ -50,6 +51,9 @@ const logout = () => {
 
 .header {
   cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .icon-circle {
@@ -94,6 +98,11 @@ const logout = () => {
   padding: 15px;
   color: white;
   cursor: pointer;
+}
+
+.menu-item a {
+  text-decoration: none;
+  color: white;
 }
 
 .menu-item:hover {
