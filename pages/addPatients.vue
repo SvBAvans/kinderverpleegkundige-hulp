@@ -59,8 +59,12 @@ const filteredPatients = computed(() => {
       </div>
     </div>
 
+
     <div class="sticky-bottom">
-      <button class="btn btn-primary w-100 rounded-pill shadow-lg" @click="savePatients">Voltooi</button>
+      <NuxtLink to="/overview" class="btn btn-primary w-100 rounded-pill shadow-lg" @click="savePatients">
+  Voltooi
+</NuxtLink>
+
     </div>
   </div>
 </template>
