@@ -33,7 +33,7 @@ const { data: patients } = await useFetch(`/api/patients`); //iets anders uit de
             <div class="row">
               <div class="col-6 d-flex flex-column justify-content-center">
                 <p class="mb-1">
-                  <strong>{{ patient.firstName }}</strong>
+                  <strong>{{ patient.firstName }} {{ patient.lastName }}</strong>
                 </p>
                 <p class="text-muted mb-0">{{ patient.dateOfBirth }}</p>
               </div>

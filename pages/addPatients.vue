@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { ref, computed } from "vue";
+// import { useFetch } from "";
+
 const addedPatients = ref<Set<string>>(new Set());
 const search = ref<string>("");
 
@@ -19,10 +22,25 @@ const savePatients = () => {
   alert("Dienst aanmaken\n" + Array.from(addedPatients.value).join("\n"));
 };
 
+// const savePatients = async () => {
+//   try {
+//     const patientIds = Array.from(addedPatients.value);
+//     if(patientIds.length === 0){
+//       alert('Geen patiënten geselecteerd');
+//       return;
+//     }
+
+//     const response = 
+//   }
+
+//   console.log("Saved patients:", Array.from(addedPatients.value));
+//   alert("Dienst aanmaken\n" + Array.from(addedPatients.value).join("\n"));
+// };
+
 const filteredPatients = computed(() => {
   return patient.value?.filter((patient: any) => {
     const query = search.value.toLowerCase();
-    return patient.firstName.toLowerCase().includes(query);
+    return patient.firstName.toLowerCase().includes(query) || patient.lastName.toLowerCase().includes(query);
     // || patient.roomNumber.toString().includes(query)
   });
 });
@@ -40,7 +58,7 @@ const filteredPatients = computed(() => {
           <div class="row">
             <div class="col-6 d-flex flex-column justify-content-center">
               <p class="mb-1">
-                <strong>{{ patient.firstName }}</strong>
+                <strong>{{ patient.firstName }} {{ patient.lastName }}</strong>
               </p>
               <p class="text-muted mb-0">{{ patient.dateOfBirth }}</p>
             </div>
