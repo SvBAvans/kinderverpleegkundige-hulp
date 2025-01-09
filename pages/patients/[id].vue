@@ -9,6 +9,7 @@ const { data: patient } = await useFetch(`/api/patients/${route.params.id}`);
       <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center" style="width: 60px; height: 60px">{{ patient.firstName?.charAt(0) }}{{ patient.lastName?.charAt(0) }}</div>
       <div>
         <h2 class="h5 mb-1">{{ patient.firstName }} {{ patient.lastName }}</h2>
+        <p>Kamernummer: {{ patient.roomNr }}</p>
         <p class="text-muted mb-0">Geboortedatum: {{ new Date(patient.dateOfBirth).toISOString().split("T")[0] }}</p>
       </div>
     </div>

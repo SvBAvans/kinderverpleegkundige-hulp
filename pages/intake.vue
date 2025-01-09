@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { toTypedSchema } from "@vee-validate/zod";
-import { object, string } from "zod";
+import { number, object, string } from "zod";
 import type { FetchError } from "ofetch";
 import type { Patient } from "@prisma/client";
 
@@ -18,6 +18,7 @@ const schema = toTypedSchema(
     patientId: string().min(1, { message: "PatientID is verplicht" }),
     dateOfBirth: string({ required_error: "Geboortedatum is verplicht" }).date(),
     diseaseProfile: string().min(1, { message: "Ziektebeeld is verplicht " }),
+    roomNr: number()
   })
 );
 
@@ -30,6 +31,7 @@ const { value: lastName } = useField("lastName");
 const { value: patientId } = useField("patientId");
 const { value: dateOfBirth } = useField("dateOfBirth");
 const { value: diseaseProfile } = useField<string>("diseaseProfile");
+const { value: roomNr } = useField<string>("roomNr");
 
 async function createPatient(values: any) {
   values.dateOfBirth = new Date(values.dateOfBirth);
@@ -51,9 +53,18 @@ async function createPatient(values: any) {
   navigateTo(`patients/${response.id}`);
 }
 
+const availableRooms = ref<number[]>([]);
+onMounted(async () => {
+  const response = await $fetch<number[]>("/api/availableRooms");
+  availableRooms.value = response;
+});
+
 const onSubmit = handleSubmit(async (values) => {
+  values.roomNr = values.roomNr.toString() as any;
   createPatient(values);
 });
+
+const roomNumbers = Array.from({ length: 20 }, (_, i) => i + 1);
 </script>
 
 <template>
@@ -84,6 +95,15 @@ const onSubmit = handleSubmit(async (values) => {
           <label>Ziektebeeld:</label>
           <textarea class="col-12" rows="5" :class="{ 'is-invalid': errors.diseaseProfile }" v-model="diseaseProfile" placeholder="Ziektebeeld"></textarea>
           <div v-if="errors.diseaseProfile" class="invalid-feedback">{{ errors.diseaseProfile }}</div>
+        </div>
+        <div class="mt-3">
+          <label>Kamer Nummer:</label>
+          <select class="form-select" aria-label="Default select example" v-model="roomNr" id="roomNr">
+            <option disabled value="">Selecteer een kamer</option>
+            <option v-for="room in availableRooms" :key="room" :value="room">
+              {{ room }}
+            </option>
+          </select>
         </div>
         <button class="intake-button btn btn-secondary btn-lg mt-3 col-12" type="submit">Afronden</button>
       </div>
