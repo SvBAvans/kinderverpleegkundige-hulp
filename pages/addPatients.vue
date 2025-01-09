@@ -22,7 +22,7 @@ const savePatients = () => {
   alert("Dienst aanmaken\n" + Array.from(addedPatients.value).join("\n"));
 };
 
-// const savePatients = async () => {
+// const savedPatients = async () => {
 //   try {
 //     const patientIds = Array.from(addedPatients.value);
 //     if(patientIds.length === 0){
