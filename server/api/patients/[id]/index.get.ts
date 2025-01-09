@@ -10,6 +10,9 @@ export default defineEventHandler(async (event) => {
     where: {
       id: patientId,
     },
+    include: {
+      persciptions: true
+    }
   });
 
   if (!patient) {

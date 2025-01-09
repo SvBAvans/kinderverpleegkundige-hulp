@@ -1,6 +1,8 @@
 <script setup>
 const route = useRoute();
-const { data: patient } = await useFetch(`/api/patients/${route.params.id}`);
+const patientId = route.params.id
+
+const { data: patient } = await useFetch(`/api/patients/${patientId}`);
 </script>
 
 <template>
@@ -23,7 +25,12 @@ const { data: patient } = await useFetch(`/api/patients/${route.params.id}`);
     <div class="divider"></div>
 
     <section class="mb-3">
-      <h3 class="h6">Medicatie</h3>
+      <div class="d-flex justify-content-between align-items-center">
+        <h3 class="h6">Medicatie</h3>
+        <NuxtLink :to="`/patients/${patientId}/addMedicine`">         
+          <Icon name="material-symbols:add-2"></Icon>
+        </NuxtLink>
+      </div>
       <div class="accordion" id="medicationAccordion">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
@@ -31,6 +38,7 @@ const { data: patient } = await useFetch(`/api/patients/${route.params.id}`);
           </h2>
           <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#medicationAccordion">
             <div class="accordion-body"><strong>Details:</strong> Take one tablet after meals as needed. Do not exceed the prescribed dose.</div>
+            {{ getFormulariumUrl("Ibuprofen") }}
           </div>
         </div>
         <div class="accordion-item">

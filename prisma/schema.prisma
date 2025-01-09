@@ -16,10 +16,21 @@ model User {
 }
 
 model Patient {
-  id             String   @id @default(uuid())
+  id             String         @id @default(uuid())
   firstName      String
   lastName       String
   patientId      String
   dateOfBirth    DateTime
   diseaseProfile String
+  persciptions   Perscription[]
+}
+
+model Perscription {
+  id         String  @id @default(uuid())
+  name       String
+  dosage     String
+  recurrance String
+  notes      String
+  patient    Patient @relation(fields: [patientId], references: [id])
+  patientId  String
 }
