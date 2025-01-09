@@ -4,18 +4,27 @@
 
 <script setup lang="ts">
 
-const { data: patients } = await useFetch(`/api/patients`); //iets anders uit de db vgm
+const { signOut } = useAuth();
+
+//TODO: shift verwijderen? wordt nu uitgelogd
 
 const endShift = () => {
-    confirm("Weet u zeker dat u deze dienst wilt beëindigen?");
-    console.log("shift has been deleted (niet echt)");
-}
+    const isConfirmed = confirm("Weet u zeker dat u deze dienst wilt beëindigen?");
+    if(isConfirmed){
+        console.log('shift ended');
+        signOut();
+    } else {
+        console.log('shift not ended');
+    }
+};
+
+const { data: patients } = await useFetch(`/api/patients`); //iets anders uit de db vgm
 
 </script>
 
 <template>
     <div class="container py-5 d-flex flex-column" style="min-height: 100vh">
-      <h2 class="text-center mb-4">Al mijn patiënten</h2>
+      <h2 class="text-center mb-4">Overzicht dienst</h2>
       <hr />
   
       <div class="flex-grow-1 overflow-auto">
