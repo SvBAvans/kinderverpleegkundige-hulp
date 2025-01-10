@@ -71,8 +71,10 @@ import { toTypedSchema } from "@vee-validate/zod";
 </script>
 
 <template>
-    <div class="d-md-flex vh-100 justify-content-center align-items-center mt-5">
-        <button class="btn btn-secondary" @click="goBack">Back</button>
+    <div class="d-md-flex flex-column vh-100 justify-content-center align-items-center mt-5">
+        <div class="w-100 text-start mb-3 ms-4">
+            <button class="btn btn-secondary" @click="goBack">Back</button>
+        </div>
         <form @submit="onSubmit" class="medicine-form col-sm-12 col-md-8 pe-0 ms-4 me-4 bg-light shadow rounded pt-1 pb-3">
             <h4 class="text-center mt-2">Voeg medicijn toe</h4>
             <div class="ms-4 me-4">
@@ -92,8 +94,8 @@ import { toTypedSchema } from "@vee-validate/zod";
                     <div v-if="errors.name" class="invalid-feedback">{{ errors.name }}</div>
                 </div>
                 <div>
-                    <p>Controleer de dosering op het kinderformularium</p>
-                    <p v-if="selectedMedicineLink">
+                    <p v-if="selectedMedicineLink" class="mt-1">
+                        <strong>Link kinderformularium:</strong><br>
                         <a :href="selectedMedicineLink" target="_blank" class="text-primary">
                             {{ selectedMedicineLink }}
                         </a>
@@ -119,3 +121,9 @@ import { toTypedSchema } from "@vee-validate/zod";
         </form>
     </div>
 </template>
+
+<style>
+    .text-primary {
+        word-break: break-word;
+    }
+</style>

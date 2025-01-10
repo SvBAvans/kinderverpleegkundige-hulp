@@ -37,8 +37,10 @@ const { data: patient } = await useFetch(`/api/patients/${patientId}`);
             <button class="accordion-button collapsed" type="button" :data-bs-toggle="'collapse'" :data-bs-target="'#collapse-' + perscription.id" aria-expanded="false" :aria-controls="'collapse-' + perscription.id">{{ perscription.name }}</button>
           </h2>
           <div :id="'collapse-' + perscription.id" class="accordion-collapse collapse" :aria-labelledby="'heading-' + perscription.id" data-bs-parent="#medicationAccordion">
-            <div class="accordion-body"><strong>Details:</strong> {{ perscription.notes }}</div>
-            {{ getFormulariumUrl( perscription.name ) }}
+            <div class="accordion-body"><strong>Dosering:</strong> {{ perscription.dosage }}</div>
+            <div class="accordion-body"><strong>Herhaling:</strong> {{ perscription.recurrance }}</div>
+            <div class="accordion-body"><strong>Aantekeningen:</strong><br> {{ perscription.notes }}</div>
+            <div class="accordion-body"><strong>Link kinderformularium:</strong><br> {{ getFormulariumUrl( perscription.name ) }} </div>
           </div>
         </div>
       </div>
@@ -89,5 +91,8 @@ const { data: patient } = await useFetch(`/api/patients/${patientId}`);
 }
 .accordion-body {
   font-size: 0.9rem;
+  padding: 5px 10px;
+  margin: 0;
+  word-break: break-word;
 }
 </style>
