@@ -1,21 +1,36 @@
 <script setup lang="ts">
+//TODO: the real id and not fleur id
 
 const { signOut } = useAuth();
+const userId = 'fjahdfjklashdfkhasdfklh';
 
-//TODO: shift verwijderen? wordt nu uitgelogd
-
-const endShift = () => {
+const endShift = async () => {
     const isConfirmed = confirm("Weet u zeker dat u deze dienst wilt beëindigen?");
-    if(isConfirmed){
-        console.log('shift ended');
-        signOut();
+    if (isConfirmed) {
+        try {
+            const response = await $fetch(`/api/patients/delete?userId=${userId}`, {
+                method: 'DELETE',
+            });
+
+            if(response?.status === 200) {
+                alert('Dienst beëindigd.');
+                  // when works:
+                console.log('shift ended');
+                signOut();
+            } else {
+                alert('Dienst kon niet beëindigd worden.');
+            }
+        } catch (error) {
+            console.error('error ending shift:', error);
+        }
+
     } else {
         console.log('shift not ended');
     }
 };
 
-const userId = 'fjahdfjklashdfkhasdfklh';
-const { data: savedPatients } = await useFetch(`/api/patients/saved?userId=${userId}`); //iets anders uit de db vgm
+
+const { data: savedPatients } = await useFetch(`/api/patients/saved?userId=${userId}`); //nu nog hardcoded fleur id
 
 </script>
 
