@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-// import { useFetch } from "";
+import { useFetch } from "#app";
+import Id from "./patients/[id].vue";
+
+// const { user } = useAuth();
 
 const addedPatients = ref<Set<string>>(new Set());
 const search = ref<string>("");
@@ -16,26 +19,34 @@ const togglePatient = (id: string) => {
   }
 };
 
-//in the console for now --  TODO: add to db
-const savePatients = () => {
-  console.log("Saved patients:", Array.from(addedPatients.value));
-  alert("Dienst aanmaken\n" + Array.from(addedPatients.value).join("\n"));
-};
-
-// const savedPatients = async () => {
-//   try {
-//     const patientIds = Array.from(addedPatients.value);
-//     if(patientIds.length === 0){
-//       alert('Geen patiënten geselecteerd');
-//       return;
-//     }
-
-//     const response = 
-//   }
-
+//in the console for now --  TODO: add to db -- old alert
+// const savePatients = () => {
 //   console.log("Saved patients:", Array.from(addedPatients.value));
 //   alert("Dienst aanmaken\n" + Array.from(addedPatients.value).join("\n"));
 // };
+
+const savePatients = async () => {
+  const patientIds = Array.from(addedPatients.value);
+
+  if(patientIds.length === 0) {
+    alert("Please select patients.");
+    return;
+  }
+
+  try{
+    const userId = "fjahdfjklashdfkhasdfklh"; //user id is fleur's for now hardcoded test
+    const response = await $fetch('/api/patients/save', {
+      method: 'POST',
+      body: { userId, patientIds },
+    });
+
+    alert(response);
+  } catch (error: any) {
+    alert(`An error has occured: ${error.data.message}`);
+    console.error(error);
+  }
+
+};
 
 const filteredPatients = computed(() => {
   return patient.value?.filter((patient: any) => {
