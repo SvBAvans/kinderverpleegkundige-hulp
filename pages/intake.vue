@@ -18,7 +18,7 @@ const schema = toTypedSchema(
     patientId: string().min(1, { message: "PatientID is verplicht" }),
     dateOfBirth: string({ required_error: "Geboortedatum is verplicht" }).date(),
     diseaseProfile: string().min(1, { message: "Ziektebeeld is verplicht " }),
-    roomNr: number()
+    roomNr: string()
   })
 );
 
