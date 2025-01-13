@@ -1,7 +1,3 @@
-<!-- ik kan hier nog niks van zien/ doen... blinde test
- dus ga hier later aan door.
--->
-
 <script setup lang="ts">
 
 const { signOut } = useAuth();
@@ -18,7 +14,8 @@ const endShift = () => {
     }
 };
 
-const { data: patients } = await useFetch(`/api/patients`); //iets anders uit de db vgm
+const userId = 'fjahdfjklashdfkhasdfklh';
+const { data: savedPatients } = await useFetch(`/api/patients/saved?userId=${userId}`); //iets anders uit de db vgm
 
 </script>
 
@@ -28,7 +25,7 @@ const { data: patients } = await useFetch(`/api/patients`); //iets anders uit de
       <hr />
   
       <div class="flex-grow-1 overflow-auto">
-        <div v-for="patient in patients" :key="patient.id" class="card p-3 shadow-sm mb-3">
+        <div v-for="patient in savedPatients?.patients" :key="patient.id" class="card p-3 shadow-sm mb-3">
           <div class="card-body">
             <div class="row">
               <div class="col-6 d-flex flex-column justify-content-center">

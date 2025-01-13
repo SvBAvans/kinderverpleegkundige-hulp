@@ -34,6 +34,7 @@ const savePatients = async () => {
   }
 
   try{
+    //TODO: change id to getting the actual user one
     const userId = "fjahdfjklashdfkhasdfklh"; //user id is fleur's for now hardcoded test
     const response = await $fetch('/api/patients/save', {
       method: 'POST',
