@@ -9,24 +9,27 @@ datasource db {
 }
 
 model User {
-  id            String @id @default(uuid())
+  id            String         @id @default(uuid())
   name          String
-  email         String @unique
+  email         String         @unique
   password_hash String
+  savedPatients SavedPatient[]
 }
 
 model Patient {
-  id             String   @id @default(uuid())
+  id             String         @id @default(uuid())
   firstName      String
   lastName       String
   patientId      String
   dateOfBirth    DateTime
   diseaseProfile String
+  savedPatients  SavedPatient[]
 }
 
-model SavedPatients {
-  id         String   @id @default(uuid())
-  patientIds String[]
-  // user     User @relation(fields: [userId], references: [id])
-  // userId  String
+model SavedPatient {
+  id        String  @id @default(uuid())
+  patientId String
+  userId    String
+  patient   Patient @relation(fields: [patientId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
 }
