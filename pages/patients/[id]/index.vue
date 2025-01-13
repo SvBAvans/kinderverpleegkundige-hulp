@@ -1,6 +1,7 @@
 <script setup>
 const route = useRoute();
 const { data: patient } = await useFetch(`/api/patients/${route.params.id}`);
+const patientId = route.params.id;
 </script>
 
 <template>
@@ -14,7 +15,11 @@ const { data: patient } = await useFetch(`/api/patients/${route.params.id}`);
     </div>
 
     <div class="divider"></div>
-
+    <div>
+      <button class="btn btn-primary mb-3 col-12"><NuxtLink :to="`/patients/${patientId}/medicalLogbook`" style="color: white; text-decoration: none;">Medisch logbook</NuxtLink></button>
+      <!-- <li class="menu-item py-3"><NuxtLink :to="`/patients/${patients![0].id}`" @click="toggleMenu">Patient Details</NuxtLink></li> -->
+      <!-- <NuxtLink :to="`/patients/${patientId}/medicalLogbook`">Medisch logbook</NuxtLink> -->
+    </div>
     <section class="mb-3">
       <h3 class="h6">Ziektebeeld:</h3>
       <p>{{ patient.diseaseProfile }}</p>
