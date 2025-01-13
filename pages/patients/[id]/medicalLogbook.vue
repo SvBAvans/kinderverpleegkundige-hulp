@@ -10,6 +10,10 @@
     }
 
     const { data: patient } = await useFetch<any>(`/api/patients/${patientId}`);
+
+    if (patient.value?.medicalCheckups) {
+        patient.value.medicalCheckups.sort((a: any, b: any) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+    }
 </script>
 
 <template>
@@ -20,7 +24,7 @@
                 <Icon name="material-symbols:add-2" size="36px"></Icon>
             </NuxtLink>
         </div>
-        <div class="accordion mt-3" id="medicalCheckupAccordion">
+        <div class="accordion mt-3 me-4" id="medicalCheckupAccordion">
             <div v-for="medicalCheckup in patient?.medicalCheckups" class="accordion-item">
                 <h2 class="accordion-header" :id="'heading-' + medicalCheckup.id">
                     <button class="accordion-button collapsed" type="button" :data-bs-toggle="'collapse'" :data-bs-target="'#collapse-' + medicalCheckup.id" aria-expanded="false" :aria-controls="'collapse-' + medicalCheckup.id">{{ medicalCheckup.timestamp }}</button>
