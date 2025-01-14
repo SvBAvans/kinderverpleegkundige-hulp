@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { getSession } = useAuth();
+const { getSession, data } = useAuth();
 
 const session = await getSession();
 </script>
