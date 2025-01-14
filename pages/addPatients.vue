@@ -7,6 +7,10 @@ const addedPatients = ref<Set<string>>(new Set());
 const search = ref<string>("");
 const router = useRouter();
 
+definePageMeta({
+  title: "Add patients",
+});
+
 const { data: patient } = await useFetch(`/api/patients`);
 
 // delete/add patient to list
@@ -44,10 +48,7 @@ const savePatients = async () => {
 const filteredPatients = computed(() => {
   return patient.value?.filter((patient: any) => {
     const query = search.value.toLowerCase();
-    return (
-      patient.firstName.toLowerCase().includes(query) ||
-      patient.lastName.toLowerCase().includes(query)
-    );
+    return patient.firstName.toLowerCase().includes(query) || patient.lastName.toLowerCase().includes(query);
   });
 });
 </script>
@@ -59,11 +60,7 @@ const filteredPatients = computed(() => {
     <hr />
 
     <div class="flex-grow-1 overflow-auto">
-      <div
-        v-for="patient in filteredPatients"
-        :key="patient.id"
-        class="card p-3 shadow-sm mb-3"
-      >
+      <div v-for="patient in filteredPatients" :key="patient.id" class="card p-3 shadow-sm mb-3">
         <div class="card-body">
           <div class="row">
             <div class="col-6 d-flex flex-column justify-content-center">
@@ -74,7 +71,7 @@ const filteredPatients = computed(() => {
             </div>
 
             <div class="col-6 d-flex align-items-center justify-content-end">
-              <p class="me-2 mb-0">kamer: {{patient.roomNr}}</p>
+              <p class="me-2 mb-0">kamer: {{ patient.roomNr }}</p>
               <Icon
                 :name="addedPatients.has(patient.id) ? 'bi:check-circle' : 'bi:plus'"
                 class="fs-3 bi"
@@ -88,13 +85,10 @@ const filteredPatients = computed(() => {
     </div>
 
     <div class="sticky-bottom">
-      <button class="btn btn-primary w-100 rounded-pill shadow-lg" @click="savePatients">
-        Voltooi
-      </button>
+      <button class="btn btn-primary w-100 rounded-pill shadow-lg" @click="savePatients">Voltooi</button>
     </div>
   </div>
 </template>
-
 
 <style scoped>
 .container {

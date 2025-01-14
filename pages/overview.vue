@@ -3,7 +3,9 @@ const { signOut, data } = useAuth();
 const userId = data.value?.user.userId;
 const router = useRouter();
 
-//`/patients/${patients![0].id}` - in the header for the first patient
+definePageMeta({
+  title: "Dienst overzicht",
+});
 
 const viewDetails = (patientId: string) => {
   return async () => {

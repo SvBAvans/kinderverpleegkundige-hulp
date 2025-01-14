@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import type { Patient } from "@prisma/client";
 
+definePageMeta({
+  title: "Kamers",
+});
+
 const { data: rooms } = await useFetch<{ roomNr: string; patient?: Patient }[]>("/api/floormap");
 </script>
 

@@ -6,6 +6,8 @@ const toggleMenu = () => {
   menuVisible.value = !menuVisible.value;
 };
 
+const route = useRoute();
+
 const logout = () => {
   signOut();
   toggleMenu();
@@ -20,6 +22,8 @@ const { data: patients } = await useFetch("/api/patients");
       <div class="d-flex align-items-center justify-content-center" @click="toggleMenu">
         <Icon name="charm:menu-hamburger" size="50px" />
       </div>
+
+      <h1 v-if="route.meta.title">{{ route.meta.title }}</h1>
     </div>
 
     <transition name="slide">

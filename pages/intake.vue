@@ -4,9 +4,9 @@ import { number, object, string } from "zod";
 import type { FetchError } from "ofetch";
 import type { Patient } from "@prisma/client";
 
-// definePageMeta({
-//   middleware: "sidebase-auth",
-// });
+definePageMeta({
+  title: "Intake",
+});
 
 const errorMessage = ref("");
 const error = ref(false);
@@ -18,7 +18,7 @@ const schema = toTypedSchema(
     patientId: string().min(1, { message: "PatientID is verplicht" }),
     dateOfBirth: string({ required_error: "Geboortedatum is verplicht" }).date(),
     diseaseProfile: string().min(1, { message: "Ziektebeeld is verplicht " }),
-    roomNr: string()
+    roomNr: string(),
   })
 );
 

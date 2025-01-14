@@ -2,6 +2,10 @@
 import type { FetchError } from "ofetch";
 import type { Patient } from "@prisma/client";
 
+definePageMeta({
+  title: "Patient Details",
+});
+
 const errorMessage = ref("");
 const error = ref(false);
 const route = useRoute();
