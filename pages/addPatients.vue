@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
 import { useFetch } from "#app";
-import Id from "./patients/[id].vue";
-
-// const { user } = useAuth();
 
 const addedPatients = ref<Set<string>>(new Set());
 const search = ref<string>("");
+const router = useRouter();
 
 const { data: patient } = await useFetch(`/api/patients`);
 
@@ -19,41 +18,36 @@ const togglePatient = (id: string) => {
   }
 };
 
-//in the console for now --  TODO: add to db -- old alert
-// const savePatients = () => {
-//   console.log("Saved patients:", Array.from(addedPatients.value));
-//   alert("Dienst aanmaken\n" + Array.from(addedPatients.value).join("\n"));
-// };
-
 const savePatients = async () => {
   const patientIds = Array.from(addedPatients.value);
 
-  if(patientIds.length === 0) {
-    alert("Please select patients.");
+  if (patientIds.length === 0) {
+    alert("Nog geen patiënten geselecteerd.");
     return;
   }
 
-  try{
-    //TODO: change id to getting the actual user one
-    const userId = "fjahdfjklashdfkhasdfklh"; //user id is fleur's for now hardcoded test
-    const response = await $fetch('/api/patients/save', {
-      method: 'POST',
+  try {
+    const userId = "fjahdfjklashdfkhasdfklh";
+    await $fetch("/api/patients/save", {
+      method: "POST",
       body: { userId, patientIds },
     });
 
-    alert(response);
+    alert("Patiënten opgeslagen");
+    router.push("/overview");
   } catch (error: any) {
-    alert(`An error has occured: ${error.data.message}`);
+    alert(`error: ${error.data.message}`);
     console.error(error);
   }
-
 };
 
 const filteredPatients = computed(() => {
   return patient.value?.filter((patient: any) => {
     const query = search.value.toLowerCase();
-    return patient.firstName.toLowerCase().includes(query) || patient.lastName.toLowerCase().includes(query);
-    // || patient.roomNumber.toString().includes(query)
+    return (
+      patient.firstName.toLowerCase().includes(query) ||
+      patient.lastName.toLowerCase().includes(query)
+    );
   });
 });
 </script>
@@ -65,7 +59,11 @@ const filteredPatients = computed(() => {
     <hr />
 
     <div class="flex-grow-1 overflow-auto">
-      <div v-for="patient in filteredPatients" :key="patient.id" class="card p-3 shadow-sm mb-3">
+      <div
+        v-for="patient in filteredPatients"
+        :key="patient.id"
+        class="card p-3 shadow-sm mb-3"
+      >
         <div class="card-body">
           <div class="row">
             <div class="col-6 d-flex flex-column justify-content-center">
@@ -89,15 +87,14 @@ const filteredPatients = computed(() => {
       </div>
     </div>
 
-
     <div class="sticky-bottom">
-      <NuxtLink to="/overview" class="btn btn-primary w-100 rounded-pill shadow-lg" @click="savePatients">
-  Voltooi
-</NuxtLink>
-
+      <button class="btn btn-primary w-100 rounded-pill shadow-lg" @click="savePatients">
+        Voltooi
+      </button>
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .container {
