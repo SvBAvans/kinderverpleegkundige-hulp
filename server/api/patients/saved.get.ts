@@ -21,6 +21,7 @@ export default defineEventHandler(async (event) => {
             dateOfBirth: entry.patient.dateOfBirth,
             diseaseProfile: entry.patient.diseaseProfile,
             patientId: entry.patientId,
+            roomNr: entry.patient.roomNr,
 
         }));
 

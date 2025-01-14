@@ -4,6 +4,10 @@ import type { FetchError } from "ofetch";
 import { object, string } from 'zod';
 import { toTypedSchema } from "@vee-validate/zod";
 
+definePageMeta({
+  title: "Medicijn Formulier",
+});
+
     const errorMessage = ref("");
     const error = ref(false);
     const router = useRouter();
@@ -74,7 +78,7 @@ import { toTypedSchema } from "@vee-validate/zod";
     <div class="d-md-flex flex-column vh-100 justify-content-center align-items-center mt-5">
         <div class="col-sm-12 col-md-8 pe-0 ms-4 me-4">
             <div class="text-start mb-3">
-                <button class="btn btn-secondary" @click="goBack">Back</button>
+                <button class="btn btn-primary mt-3" @click="goBack">Back</button>
             </div>
 
             <form @submit="onSubmit" class="medicine-form bg-light shadow rounded pt-1 pb-3">
@@ -103,22 +107,22 @@ import { toTypedSchema } from "@vee-validate/zod";
                             </a>
                         </p>
                     </div>
-                    <div class="mt-2">
+                    <div class="mt-3">
                         <label for="dosage">Dosering</label>
-                        <input class="form-control input-lg border border-secondary" id="dosage" type="text" v-model="dosage" placeholder="Dosering" />
+                        <input class="form-control input-lg" id="dosage" type="text" v-model="dosage" placeholder="Dosering" />
                         <div v-if="errors.dosage" class="invalid-feedback">{{ errors.dosage }}</div>
                     </div>
-                    <div class="mt-2">
+                    <div class="mt-3">
                         <label for="recurrance">Herhaling</label>
-                        <textarea class="form-control" rows="3" id="recurrance" v-model="recurrance"></textarea>
+                        <textarea class="form-control" rows="3" id="recurrance" v-model="recurrance" placeholder="Herhaling"></textarea>
                         <div v-if="errors.recurrance" class="invalid-feedback">{{ errors.recurrance }}</div>
                     </div>
-                    <div>
+                    <div class="mt-3">
                         <label for="notes">Aantekeningen</label>
-                        <textarea class="form-control" rows="5" id="notes" v-model="notes"></textarea>
+                        <textarea class="form-control" rows="5" id="notes" v-model="notes" placeholder="Aantekeningen"></textarea>
                         <div v-if="errors.notes" class="invalid-feedback">{{ errors.notes }}</div>
                     </div>
-                    <button class="medicine-button btn btn-secondary btn-lg mt-3 col-12" type="submit">Voeg medicijn toe</button>
+                    <button class="medicine-button btn btn-primary btn-lg mt-3 col-12" type="submit">Voeg medicijn toe</button>
                 </div>
             </form>
         </div>

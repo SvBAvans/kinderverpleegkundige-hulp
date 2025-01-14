@@ -8,8 +8,10 @@ const search = ref<string>("");
 const router = useRouter();
 
 definePageMeta({
-  title: "Add patients",
+  title: "Voeg patient toe",
 });
+
+const {data: authData} = useAuth();
 
 const { data: patient } = await useFetch(`/api/patients`);
 
@@ -31,7 +33,7 @@ const savePatients = async () => {
   }
 
   try {
-    const userId = "fjahdfjklashdfkhasdfklh";
+    const userId = authData.value?.user.userId;
     await $fetch("/api/patients/save", {
       method: "POST",
       body: { userId, patientIds },
@@ -55,12 +57,11 @@ const filteredPatients = computed(() => {
 
 <template>
   <div class="container py-5 d-flex flex-column" style="min-height: 100vh">
-    <h2 class="text-center mb-4">Voeg patiënt toe</h2>
-    <input class="form-control mb-3" type="text" v-model="search" placeholder="Search..." />
+    <input class="form-control mb-3 mt-3 bg-white" type="text" v-model="search" placeholder="Search..." />
     <hr />
 
     <div class="flex-grow-1 overflow-auto">
-      <div v-for="patient in filteredPatients" :key="patient.id" class="card p-3 shadow-sm mb-3">
+      <div v-for="patient in filteredPatients" :key="patient.id" class="card p-3 shadow-sm mb-3 bg-white">
         <div class="card-body">
           <div class="row">
             <div class="col-6 d-flex flex-column justify-content-center">
@@ -75,7 +76,7 @@ const filteredPatients = computed(() => {
               <Icon
                 :name="addedPatients.has(patient.id) ? 'bi:check-circle' : 'bi:plus'"
                 class="fs-3 bi"
-                :style="{ color: addedPatients.has(patient.id) ? '#10b981' : '#3b82f6' }"
+                :style="{ color: addedPatients.has(patient.id) ? '#10b981' : '#50a399' }"
                 @click="togglePatient(patient.id)"
               ></Icon>
             </div>
@@ -132,7 +133,6 @@ button:active {
 .sticky-bottom {
   position: sticky;
   bottom: 0;
-  background: white;
   padding-top: 10px;
 }
 </style>

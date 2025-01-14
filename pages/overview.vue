@@ -46,11 +46,11 @@ const { data: savedPatients } = await useFetch(`/api/patients/saved?userId=${use
 
 <template>
   <div class="container py-5 d-flex flex-column" style="min-height: 100vh">
-    <h2 class="text-center mb-4">Overzicht dienst</h2>
+    <!-- <h2 class="text-center mb-4">Overzicht dienst</h2> -->
     <hr />
 
     <div class="flex-grow-1 overflow-auto">
-      <div v-for="patient in savedPatients?.patients" :key="patient.id" class="card p-3 shadow-sm mb-3">
+      <div v-for="patient in savedPatients?.patients" :key="patient.id" class="card p-3 shadow-sm mb-3 bg-white">
         <div class="card-body" @click="() => viewDetails(patient.id)()">
           <div class="row">
             <div class="col-6 d-flex flex-column justify-content-center">
@@ -61,7 +61,7 @@ const { data: savedPatients } = await useFetch(`/api/patients/saved?userId=${use
             </div>
 
             <div class="col-6 d-flex align-items-center justify-content-end">
-              <p class="me-2 mb-0">kamer: [roomnr]</p>
+              <p class="me-2 mb-0">kamer: {{ patient.roomNr }}</p>
             </div>
           </div>
         </div>
@@ -116,7 +116,6 @@ button:active {
 .sticky-bottom {
   position: sticky;
   bottom: 0;
-  background: white;
   padding-top: 10px;
 }
 </style>

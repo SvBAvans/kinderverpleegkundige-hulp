@@ -11,7 +11,6 @@ const medicines = [
     { name: "Losartan", formularium_url: "https://www.kinderformularium.nl/geneesmiddel/414/losartan" },
     { name: "Metoprolol", formularium_url: "https://www.kinderformularium.nl/geneesmiddel/426/metoprolol" },
     { name: "Salbutamol", formularium_url: "https://www.kinderformularium.nl/geneesmiddel/154/salbutamol" },
-    { name: "Prednison", formularium_url: "https://example.com/prednison" },
     { name: "Levothyroxine", formularium_url: "https://www.kinderformularium.nl/geneesmiddel/198/levothyroxine" },
     { name: "Clopidogrel", formularium_url: "https://www.kinderformularium.nl/geneesmiddel/29061/clopidogrel" },
     { name: "Citalopram", formularium_url: "https://www.kinderformularium.nl/geneesmiddel/228/citalopram" },

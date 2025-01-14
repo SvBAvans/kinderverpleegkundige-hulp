@@ -45,11 +45,11 @@ async function confirmDelete() {
 <template>
   <div class="page-container mt-5">
     <div class="patient-header mb-3">
-      <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center" style="width: 60px; height: 60px">{{ patient?.firstName.charAt(0) }}{{ patient?.lastName.charAt(0) }}</div>
+      <div class="user-profile rounded-circle text-white d-flex justify-content-center align-items-center" style="width: 60px; height: 60px">{{ patient?.firstName.charAt(0) }}{{ patient?.lastName.charAt(0) }}</div>
       <div>
         <h2 class="h5 mb-1">{{ patient.firstName }} {{ patient.lastName }}</h2>
         <p>Kamernummer: {{ patient.roomNr }}</p>
-        <p class="text-muted mb-0">Geboortedatum: {{ new Date(patient.dateOfBirth).toISOString().split("T")[0] }}</p>
+        <p class="mb-0">Geboortedatum: {{ new Date(patient.dateOfBirth).toISOString().split("T")[0] }}</p>
       </div>
     </div>
 
@@ -65,7 +65,7 @@ async function confirmDelete() {
     <section class="mb-3">
       <div class="d-flex justify-content-between align-items-center">
         <h3 class="h6">Medicatie</h3>
-        <NuxtLink :to="`/patients/${patientId}/addMedicine`">
+        <NuxtLink class="plus-icon" :to="`/patients/${patientId}/addMedicine`">
           <Icon name="material-symbols:add-2"></Icon>
         </NuxtLink>
       </div>
@@ -85,7 +85,9 @@ async function confirmDelete() {
             </div>
             <div class="accordion-body">
               <strong>Link kinderformularium:</strong><br />
-              {{ getFormulariumUrl(perscription.name) }}
+              <a :href="getFormulariumUrl(perscription.name)" target="_blank" class="text-white">
+                {{ getFormulariumUrl(perscription.name) }}
+              </a>
             </div>
           </div>
         </div>
@@ -135,11 +137,35 @@ async function confirmDelete() {
 }
 .accordion-button {
   font-size: 1rem;
+  background-color: #50a399;
+  color: #fff;
+}
+.accordion-button:focus {
+  border-color: #50a399 !important; 
+  box-shadow: 0 0 0 0.25rem rgba(80, 163, 153, 0.5); 
+  outline: none;
 }
 .accordion-body {
   font-size: 0.9rem;
   padding: 5px 10px;
   margin: 0;
   word-break: break-word;
+}
+
+.accordion-collapse {
+  background-color: #108173;
+  color: white;
+}
+
+.user-profile {
+  background-color: #F4A261;
+}
+
+.plus-icon {
+  color: #50a399;
+}
+
+.text-white {
+  color: white;
 }
 </style>

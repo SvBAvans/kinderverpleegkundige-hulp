@@ -32,7 +32,7 @@ model SavedPatient {
   id        String  @id @default(uuid())
   patientId String
   userId    String
-  patient   Patient @relation(fields: [patientId], references: [id])
+  patient   Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
   user      User    @relation(fields: [userId], references: [id])
 }
 
