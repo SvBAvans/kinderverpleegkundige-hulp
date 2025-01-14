@@ -1,12 +1,48 @@
-<script setup>
+<script setup lang="ts">
+import type { FetchError } from "ofetch";
+import type { Patient } from "@prisma/client";
+
+const errorMessage = ref("");
+const error = ref(false);
 const route = useRoute();
-const { data: patient } = await useFetch(`/api/patients/${route.params.id}`);
+
+const patientId = route.params.id;
+
+const { data: patient } = await useFetch<Patient>(`/api/patients/${patientId}`);
+
+async function deletePatient() {
+  const response = await $fetch<Patient>(`/api/patients/${patientId}`, { method: "delete" }).catch((e: FetchError) => {
+    errorMessage.value = e.data.message;
+    error.value = true;
+  });
+
+  if (error.value) {
+    return;
+  }
+
+  if (!response) {
+    errorMessage.value = "An error occurred";
+    error.value = true;
+    return;
+  }
+
+  navigateTo(`/addPatients`);
+}
+
+async function confirmDelete() {
+  const userConfirmed = confirm('Weet je zeker dat je deze patient wilt ontslaan?');
+  
+  if (userConfirmed) {
+    await deletePatient();
+  }
+}
+
 </script>
 
 <template>
   <div class="page-container mt-5">
     <div class="patient-header mb-3">
-      <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center" style="width: 60px; height: 60px">{{ patient.firstName?.charAt(0) }}{{ patient.lastName?.charAt(0) }}</div>
+      <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center" style="width: 60px; height: 60px">{{ patient?.firstName.charAt(0) }}{{ patient?.lastName.charAt(0) }}</div>
       <div>
         <h2 class="h5 mb-1">{{ patient.firstName }} {{ patient.lastName }}</h2>
         <p>Kamernummer: {{ patient.roomNr }}</p>
@@ -18,7 +54,7 @@ const { data: patient } = await useFetch(`/api/patients/${route.params.id}`);
 
     <section class="mb-3">
       <h3 class="h6">Ziektebeeld:</h3>
-      <p>{{ patient.diseaseProfile }}</p>
+      <p>{{ patient?.diseaseProfile }}</p>
     </section>
 
     <div class="divider"></div>
@@ -74,6 +110,9 @@ const { data: patient } = await useFetch(`/api/patients/${route.params.id}`);
         anim id est laborum..
       </p>
     </section>
+    <button @click="confirmDelete" class="btn btn-primary w-100 mt-4">
+      Ontsla patient
+    </button>
   </div>
 </template>
 
