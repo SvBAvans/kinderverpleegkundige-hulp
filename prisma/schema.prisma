@@ -42,6 +42,6 @@ model Perscription {
   dosage     String
   recurrance String
   notes      String
-  patient    Patient @relation(fields: [patientId], references: [id])
+  patient    Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
   patientId  String
 }
