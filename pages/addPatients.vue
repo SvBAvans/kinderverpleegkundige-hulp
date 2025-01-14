@@ -74,7 +74,7 @@ const filteredPatients = computed(() => {
             </div>
 
             <div class="col-6 d-flex align-items-center justify-content-end">
-              <p class="me-2 mb-0">kamer: [roomnr]</p>
+              <p class="me-2 mb-0">kamer: {{patient.roomNr}}</p>
               <Icon
                 :name="addedPatients.has(patient.id) ? 'bi:check-circle' : 'bi:plus'"
                 class="fs-3 bi"
