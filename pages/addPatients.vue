@@ -1,6 +1,11 @@
 <script setup lang="ts">
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useFetch } from "#app";
+
 const addedPatients = ref<Set<string>>(new Set());
 const search = ref<string>("");
+const router = useRouter();
 
 const { data: patient } = await useFetch(`/api/patients`);
 
@@ -13,17 +18,36 @@ const togglePatient = (id: string) => {
   }
 };
 
-//in the console for now --  TODO: add to db
-const savePatients = () => {
-  console.log("Saved patients:", Array.from(addedPatients.value));
-  alert("Dienst aanmaken\n" + Array.from(addedPatients.value).join("\n"));
+const savePatients = async () => {
+  const patientIds = Array.from(addedPatients.value);
+
+  if (patientIds.length === 0) {
+    alert("Nog geen patiënten geselecteerd.");
+    return;
+  }
+
+  try {
+    const userId = "fjahdfjklashdfkhasdfklh";
+    await $fetch("/api/patients/save", {
+      method: "POST",
+      body: { userId, patientIds },
+    });
+
+    alert("Patiënten opgeslagen");
+    router.push("/overview");
+  } catch (error: any) {
+    alert(`error: ${error.data.message}`);
+    console.error(error);
+  }
 };
 
 const filteredPatients = computed(() => {
   return patient.value?.filter((patient: any) => {
     const query = search.value.toLowerCase();
-    return patient.firstName.toLowerCase().includes(query);
-    // || patient.roomNumber.toString().includes(query)
+    return (
+      patient.firstName.toLowerCase().includes(query) ||
+      patient.lastName.toLowerCase().includes(query)
+    );
   });
 });
 </script>
@@ -35,12 +59,16 @@ const filteredPatients = computed(() => {
     <hr />
 
     <div class="flex-grow-1 overflow-auto">
-      <div v-for="patient in filteredPatients" :key="patient.id" class="card p-3 shadow-sm mb-3">
+      <div
+        v-for="patient in filteredPatients"
+        :key="patient.id"
+        class="card p-3 shadow-sm mb-3"
+      >
         <div class="card-body">
           <div class="row">
             <div class="col-6 d-flex flex-column justify-content-center">
               <p class="mb-1">
-                <strong>{{ patient.firstName }}</strong>
+                <strong>{{ patient.firstName }} {{ patient.lastName }}</strong>
               </p>
               <p class="text-muted mb-0">{{ patient.dateOfBirth }}</p>
             </div>
@@ -60,10 +88,13 @@ const filteredPatients = computed(() => {
     </div>
 
     <div class="sticky-bottom">
-      <button class="btn btn-primary w-100 rounded-pill shadow-lg" @click="savePatients">Voltooi</button>
+      <button class="btn btn-primary w-100 rounded-pill shadow-lg" @click="savePatients">
+        Voltooi
+      </button>
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .container {
