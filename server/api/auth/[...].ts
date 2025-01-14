@@ -39,4 +39,18 @@ export default NuxtAuthHandler({
       },
     }),
   ],
+
+  callbacks: {
+    async session({ session, token }) {
+      // Return the modified session
+      return {
+        ...session,
+        user: {
+          firstName: token.name,
+          userId: token.sub,
+          email: token.email,
+        },
+      };
+    },
+  },
 });

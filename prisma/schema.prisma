@@ -24,6 +24,7 @@ model Patient {
   dateOfBirth    DateTime
   diseaseProfile String
   roomNr         String
+  persciptions   Perscription[]
   savedPatients  SavedPatient[]
 }
 
@@ -33,4 +34,14 @@ model SavedPatient {
   userId    String
   patient   Patient @relation(fields: [patientId], references: [id])
   user      User    @relation(fields: [userId], references: [id])
+}
+
+model Perscription {
+  id         String  @id @default(uuid())
+  name       String
+  dosage     String
+  recurrance String
+  notes      String
+  patient    Patient @relation(fields: [patientId], references: [id])
+  patientId  String
 }

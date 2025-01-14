@@ -30,13 +30,12 @@ async function deletePatient() {
 }
 
 async function confirmDelete() {
-  const userConfirmed = confirm('Weet je zeker dat je deze patient wilt ontslaan?');
-  
+  const userConfirmed = confirm("Weet je zeker dat je deze patient wilt ontslaan?");
+
   if (userConfirmed) {
     await deletePatient();
   }
 }
-
 </script>
 
 <template>
@@ -60,30 +59,30 @@ async function confirmDelete() {
     <div class="divider"></div>
 
     <section class="mb-3">
-      <h3 class="h6">Medicatie</h3>
+      <div class="d-flex justify-content-between align-items-center">
+        <h3 class="h6">Medicatie</h3>
+        <NuxtLink :to="`/patients/${patientId}/addMedicine`">
+          <Icon name="material-symbols:add-2"></Icon>
+        </NuxtLink>
+      </div>
       <div class="accordion" id="medicationAccordion">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">Ibuprofen (1)</button>
+        <div v-for="perscription in patient.persciptions" class="accordion-item">
+          <h2 class="accordion-header" :id="'heading-' + perscription.id">
+            <button class="accordion-button collapsed" type="button" :data-bs-toggle="'collapse'" :data-bs-target="'#collapse-' + perscription.id" aria-expanded="false" :aria-controls="'collapse-' + perscription.id">
+              {{ perscription.name }}
+            </button>
           </h2>
-          <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#medicationAccordion">
-            <div class="accordion-body"><strong>Details:</strong> Take one tablet after meals as needed. Do not exceed the prescribed dose.</div>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingTwo">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Ibuprofen (2)</button>
-          </h2>
-          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#medicationAccordion">
-            <div class="accordion-body"><strong>Details:</strong> Use as directed for pain relief. Consult your doctor for further instructions.</div>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingThree">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Ibuprofen (3)</button>
-          </h2>
-          <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#medicationAccordion">
-            <div class="accordion-body"><strong>Details:</strong> Take with a full glass of water. Monitor for any side effects.</div>
+          <div :id="'collapse-' + perscription.id" class="accordion-collapse collapse" :aria-labelledby="'heading-' + perscription.id" data-bs-parent="#medicationAccordion">
+            <div class="accordion-body"><strong>Dosering:</strong> {{ perscription.dosage }}</div>
+            <div class="accordion-body"><strong>Herhaling:</strong> {{ perscription.recurrance }}</div>
+            <div class="accordion-body">
+              <strong>Aantekeningen:</strong><br />
+              {{ perscription.notes }}
+            </div>
+            <div class="accordion-body">
+              <strong>Link kinderformularium:</strong><br />
+              {{ getFormulariumUrl(perscription.name) }}
+            </div>
           </div>
         </div>
       </div>
@@ -110,9 +109,7 @@ async function confirmDelete() {
         anim id est laborum..
       </p>
     </section>
-    <button @click="confirmDelete" class="btn btn-primary w-100 mt-4">
-      Ontsla patient
-    </button>
+    <button @click="confirmDelete" class="btn btn-primary w-100 mt-4">Ontsla patient</button>
   </div>
 </template>
 
@@ -137,5 +134,8 @@ async function confirmDelete() {
 }
 .accordion-body {
   font-size: 0.9rem;
+  padding: 5px 10px;
+  margin: 0;
+  word-break: break-word;
 }
 </style>
