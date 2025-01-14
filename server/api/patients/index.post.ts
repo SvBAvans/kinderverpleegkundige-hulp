@@ -17,6 +17,7 @@ export default defineEventHandler(async (event) => {
       dateOfBirth: body.dateOfBirth,
       diseaseProfile: body.diseaseProfile,
       patientId: body.patientId,
+      roomNr: body.roomNr
     },
   });
 });
