@@ -3,6 +3,20 @@
 
 const { signOut } = useAuth();
 const userId = 'fjahdfjklashdfkhasdfklh';
+const router = useRouter();
+
+//`/patients/${patients![0].id}` - in the header for the first patient
+
+const viewDetails = (patientId: string) => {
+  return async () => {
+    try {
+      await router.push(`/patients/${patientId}`);
+    } catch (error) {
+      console.error('Trouble getting patient details:', error);
+    }
+  };
+};
+
 
 const endShift = async () => {
     const isConfirmed = confirm("Weet u zeker dat u deze dienst wilt beëindigen?");
@@ -41,7 +55,7 @@ const { data: savedPatients } = await useFetch(`/api/patients/saved?userId=${use
   
       <div class="flex-grow-1 overflow-auto">
         <div v-for="patient in savedPatients?.patients" :key="patient.id" class="card p-3 shadow-sm mb-3">
-          <div class="card-body">
+          <div class="card-body" @click="() => viewDetails(patient.id)()">
             <div class="row">
               <div class="col-6 d-flex flex-column justify-content-center">
                 <p class="mb-1">
