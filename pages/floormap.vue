@@ -1,21 +1,11 @@
 <script lang="ts" setup>
+import type { Patient } from "@prisma/client";
+
 const logClick = (room: string) => {
   console.log("Clicked room: " + room);
 };
 
-//TODO: Dit is test data
-const rooms = [
-  { roomNr: "1", patient: { firstName: "John", lastName: "Doe", diseaseProfile: "Tintelende tenen" } },
-  { roomNr: "2" },
-  { roomNr: "3" },
-  { roomNr: "4" },
-  { roomNr: "5" },
-  { roomNr: "6" },
-  { roomNr: "7" },
-  { roomNr: "8" },
-  { roomNr: "neo-1" },
-  { roomNr: "neo-2" },
-];
+const { data: rooms } = await useFetch<{ roomNr: string; patient?: Patient }[]>("/api/floormap");
 </script>
 
 <template>

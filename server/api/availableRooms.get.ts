@@ -1,6 +1,12 @@
-import { array } from "zod";
+import { getServerSession } from "#auth";
 
 export default defineEventHandler(async (event) => {
+  const session = await getServerSession(event);
+  if (!session) {
+    sendError(event, createError({ statusMessage: "Unauthenticated", statusCode: 401 }));
+    return;
+  }
+
   const prisma = usePrisma();
 
   const patients = await prisma.patient.findMany({
@@ -13,9 +19,7 @@ export default defineEventHandler(async (event) => {
 
   const allRoomNumbers = Array.from({ length: 20 }, (_, i) => String(i + 1));
 
-  const availableRooms = allRoomNumbers.filter(
-    (room) => !assignedRoomNumbers.includes(room)
-  );
+  const availableRooms = allRoomNumbers.filter((room) => !assignedRoomNumbers.includes(room));
 
   return availableRooms;
 });

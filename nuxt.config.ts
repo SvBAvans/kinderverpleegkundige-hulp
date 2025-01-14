@@ -37,10 +37,6 @@ export default defineNuxtConfig({
           src: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js",
           tagPosition: "bodyClose",
         },
-        {
-          innerHTML: "const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle=\"tooltip\"]'); const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))",
-          tagPosition: "bodyClose",
-        },
       ],
     },
   },
