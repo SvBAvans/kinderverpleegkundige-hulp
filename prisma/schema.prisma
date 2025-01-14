@@ -22,6 +22,7 @@ model Patient {
   patientId      String
   dateOfBirth    DateTime
   diseaseProfile String
+  roomNr         String
   persciptions   Perscription[]
 }
 
