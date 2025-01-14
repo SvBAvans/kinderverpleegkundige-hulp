@@ -60,7 +60,7 @@ const onSubmit = handleSubmit(async (values) => {
         {{ signInError }}
       </div>
 
-      <button class="login-button btn btn-secondary btn-lg mt-3 col-12" type="submit">Login</button>
+      <button class="login-button btn btn-primary btn-lg mt-3 col-12" type="submit">Login</button>
     </form>
   </div>
 </template>

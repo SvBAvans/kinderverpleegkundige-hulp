@@ -9,17 +9,39 @@ datasource db {
 }
 
 model User {
-  id            String @id @default(uuid())
+  id            String         @id @default(uuid())
   name          String
-  email         String @unique
+  email         String         @unique
   password_hash String
+  savedPatients SavedPatient[]
 }
 
 model Patient {
-  id             String   @id @default(uuid())
+  id             String         @id @default(uuid())
   firstName      String
   lastName       String
   patientId      String
   dateOfBirth    DateTime
   diseaseProfile String
+  roomNr         String
+  persciptions   Perscription[]
+  savedPatients  SavedPatient[]
+}
+
+model SavedPatient {
+  id        String  @id @default(uuid())
+  patientId String
+  userId    String
+  patient   Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id])
+}
+
+model Perscription {
+  id         String  @id @default(uuid())
+  name       String
+  dosage     String
+  recurrance String
+  notes      String
+  patient    Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  patientId  String
 }

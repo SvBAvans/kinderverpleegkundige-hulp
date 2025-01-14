@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { toTypedSchema } from "@vee-validate/zod";
-import { object, string } from "zod";
+import { number, object, string } from "zod";
 import type { FetchError } from "ofetch";
 import type { Patient } from "@prisma/client";
 
-// definePageMeta({
-//   middleware: "sidebase-auth",
-// });
+definePageMeta({
+  title: "Patient Intake",
+});
 
 const errorMessage = ref("");
 const error = ref(false);
@@ -18,6 +18,7 @@ const schema = toTypedSchema(
     patientId: string().min(1, { message: "PatientID is verplicht" }),
     dateOfBirth: string({ required_error: "Geboortedatum is verplicht" }).date(),
     diseaseProfile: string().min(1, { message: "Ziektebeeld is verplicht " }),
+    roomNr: string(),
   })
 );
 
@@ -30,6 +31,7 @@ const { value: lastName } = useField("lastName");
 const { value: patientId } = useField("patientId");
 const { value: dateOfBirth } = useField("dateOfBirth");
 const { value: diseaseProfile } = useField<string>("diseaseProfile");
+const { value: roomNr } = useField<string>("roomNr");
 
 async function createPatient(values: any) {
   values.dateOfBirth = new Date(values.dateOfBirth);
@@ -51,47 +53,72 @@ async function createPatient(values: any) {
   navigateTo(`patients/${response.id}`);
 }
 
+const availableRooms = ref<number[]>([]);
+onMounted(async () => {
+  const response = await $fetch<number[]>("/api/availableRooms");
+  availableRooms.value = response;
+});
+
 const onSubmit = handleSubmit(async (values) => {
+  values.roomNr = values.roomNr.toString() as any;
   createPatient(values);
 });
+
+const roomNumbers = Array.from({ length: 20 }, (_, i) => i + 1);
 </script>
 
 <template>
-  <div class="d-md-flex vh-100 justify-content-center align-items-center">
+  <div class="intake-div d-md-flex justify-content-center align-items-center mt-5">
     <form @submit="onSubmit" class="intake-form col-sm-12 col-md-8 pe-0 ms-4 me-4 bg-light shadow rounded pt-1 pb-3">
+      <h4 class="text-center mt-2">Voeg patient toe</h4>
       <div class="ms-4 me-4">
         <div class="mt-2">
           <label for="firstName" class="form-label">Voornaam:</label>
-          <input class="form-control input-lg border border-secondary" :class="{ 'is-invalid': errors.firstName }" id="firstName" type="text" v-model="firstName" placeholder="Voornaam" />
+          <input class="form-control input-lg" :class="{ 'is-invalid': errors.firstName }" id="firstName" type="text" v-model="firstName" placeholder="Voornaam" />
           <div v-if="errors.firstName" class="invalid-feedback">{{ errors.firstName }}</div>
         </div>
         <div class="mt-3">
           <label for="lastName">Achternaam:</label>
-          <input class="form-control input-lg border border-secondary" :class="{ 'is-invalid': errors.lastName }" id="lastName" type="text" v-model="lastName" placeholder="Achternaam" />
+          <input class="form-control input-lg" :class="{ 'is-invalid': errors.lastName }" id="lastName" type="text" v-model="lastName" placeholder="Achternaam" />
           <div v-if="errors.lastName" class="invalid-feedback">{{ errors.lastName }}</div>
         </div>
         <div class="mt-3">
           <label for="patientID">Patient-ID:</label>
-          <input class="form-control input-lg border border-secondary" :class="{ 'is-invalid': errors.patientId }" id="patientID" type="text" v-model="patientId" placeholder="Patient-ID" />
+          <input class="form-control input-lg" :class="{ 'is-invalid': errors.patientId }" id="patientID" type="text" v-model="patientId" placeholder="Patient-ID" />
           <div v-if="errors.patientId" class="invalid-feedback">{{ errors.patientId }}</div>
         </div>
         <div class="mt-3">
           <label for="dateOfBirth">Geboortedatum:</label>
-          <input class="form-control input-lg border border-secondary" :class="{ 'is-invalid': errors.dateOfBirth }" id="dateOfBirth" type="date" v-model="dateOfBirth" placeholder="Geboortedatum" />
+          <input class="form-control input-lg" :class="{ 'is-invalid': errors.dateOfBirth }" id="dateOfBirth" type="date" v-model="dateOfBirth" placeholder="Geboortedatum" />
           <div v-if="errors.dateOfBirth" class="invalid-feedback">{{ errors.dateOfBirth }}</div>
         </div>
         <div class="mt-3">
           <label>Ziektebeeld:</label>
-          <textarea class="col-12" rows="5" :class="{ 'is-invalid': errors.diseaseProfile }" v-model="diseaseProfile" placeholder="Ziektebeeld"></textarea>
+          <textarea class="col-12 form-control" rows="5" :class="{ 'is-invalid': errors.diseaseProfile }" v-model="diseaseProfile" placeholder="Ziektebeeld"></textarea>
           <div v-if="errors.diseaseProfile" class="invalid-feedback">{{ errors.diseaseProfile }}</div>
         </div>
-        <button class="intake-button btn btn-secondary btn-lg mt-3 col-12" type="submit">Afronden</button>
+        <div class="mt-3">
+          <label>Kamer Nummer:</label>
+          <select class="form-select" aria-label="Default select example" v-model="roomNr" id="roomNr">
+            <option disabled value="">Selecteer een kamer</option>
+            <option v-for="room in availableRooms" :key="room" :value="room">
+              {{ room }}
+            </option>
+          </select>
+        </div>
+        <button class="intake-button btn btn-primary btn-lg mt-3 col-12" type="submit">Afronden</button>
       </div>
     </form>
   </div>
 </template>
 
 <style>
+
+.intake-div {
+  padding-top: 20px;
+  margin-bottom: 0;
+  overflow-y: auto;
+}
 @media screen and (min-width: 768px) {
   .intake-form {
     font-size: 25px;
