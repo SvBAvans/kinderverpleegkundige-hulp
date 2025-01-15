@@ -16,9 +16,7 @@ const patientId = route.params.id;
 
     <div class="divider"></div>
     <div>
-      <button class="btn btn-primary mb-3 col-12"><NuxtLink :to="`/patients/${patientId}/medicalLogbook`" style="color: white; text-decoration: none;">Medisch logbook</NuxtLink></button>
-      <!-- <li class="menu-item py-3"><NuxtLink :to="`/patients/${patients![0].id}`" @click="toggleMenu">Patient Details</NuxtLink></li> -->
-      <!-- <NuxtLink :to="`/patients/${patientId}/medicalLogbook`">Medisch logbook</NuxtLink> -->
+      <NuxtLink :to="`/patients/${patientId}/medicalLogbook`" class="btn btn-primary mb-3 col-12">Medisch logbook</NuxtLink>
     </div>
     <section class="mb-3">
       <h3 class="h6">Ziektebeeld:</h3>

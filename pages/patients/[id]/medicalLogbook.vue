@@ -17,20 +17,28 @@
 </script>
 
 <template>
-    <div class="mt-5 ms-4">
-        <div class="d-flex justify-content-between align-items-center mt-3 me-5">
-            <button class="btn btn-secondary" @click="goBack">Back</button>
+    <div class="page-container">
+        <div class="d-flex justify-content-between align-items-center me-5">
+            <button class="btn btn-secondary ms-4" @click="goBack">Back</button>
             <NuxtLink :to="`/patients/${patientId}/createMedicalCheckup`">         
-                <Icon name="material-symbols:add-2" size="36px"></Icon>
+                <Icon class="plus-icon" name="material-symbols:add-2" size="36px"></Icon>
             </NuxtLink>
         </div>
-        <div class="accordion mt-3 me-4" id="medicalCheckupAccordion">
-            <div v-for="medicalCheckup in patient?.medicalCheckups" class="accordion-item">
-                <h2 class="accordion-header" :id="'heading-' + medicalCheckup.id">
-                    <button class="accordion-button collapsed" type="button" :data-bs-toggle="'collapse'" :data-bs-target="'#collapse-' + medicalCheckup.id" aria-expanded="false" :aria-controls="'collapse-' + medicalCheckup.id">{{ medicalCheckup.timestamp }}</button>
-                </h2>
-                <div :id="'collapse-' + medicalCheckup.id" class="accordion-collapse collapse" :aria-labelledby="'heading-' + medicalCheckup.id" data-bs-parent="#medicalCheckupAccordion">
-                    <div class="accordion-body"><strong>Aantekeningen:</strong><br> {{ medicalCheckup.notes }}</div>
+        <hr/>
+        <div class="accordion mt-3 mx-4" id="medicalCheckupAccordion">
+            <div class="text-center" v-if="!patient?.medicalCheckups || patient.medicalCheckups.length === 0">
+                Geen medische controles voor deze patient
+            </div>
+            <div v-else>
+                <div v-for="medicalCheckup in patient.medicalCheckups" :key="medicalCheckup.id" class="accordion-item">
+                    <h2 class="accordion-header" :id="'heading-' + medicalCheckup.id">
+                        <button class="accordion-button collapsed" type="button" :data-bs-toggle="'collapse'" :data-bs-target="'#collapse-' + medicalCheckup.id" aria-expanded="false" :aria-controls="'collapse-' + medicalCheckup.id">
+                            {{ new Date(medicalCheckup.timestamp).toLocaleString([], { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) }}
+                        </button>
+                    </h2>
+                    <div :id="'collapse-' + medicalCheckup.id" class="accordion-collapse collapse" :aria-labelledby="'heading-' + medicalCheckup.id" data-bs-parent="#medicalCheckupAccordion">
+                        <div class="accordion-body"><strong>Aantekeningen:</strong><br> {{ medicalCheckup.notes }}</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -49,5 +57,13 @@
     padding: 5px 10px;
     margin: 0;
     word-break: break-word;
+    }
+
+    .page-container {
+        margin-top: 70px;
+    }
+
+    .plus-icon {
+        color: #50a399;
     }
 </style>

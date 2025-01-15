@@ -54,17 +54,19 @@ import { object, string } from 'zod';
 
 <template>
     <div class="d-md-flex vh-100 justify-content-center align-items-center mt-5">
-        <button class="btn btn-secondary ms-4 mt-3 mb-3" @click="goBack">Back</button>
-        <form @submit="onSubmit" class="medical-checkup-form col-sm-12 col-md-8 pe-0 ms-4 me-4 bg-light shadow rounded pt-1 pb-3">
-            <h2 class="text-center mt-2">Medische controle</h2>
-            <div class="ms-4 me-4">
-                <div class="mt-2">
-                    <label for="notes"><strong>Aantekeningen:</strong></label>
-                    <textarea class="col-12" rows="10" id="notes" v-model="notes" placeholder="Aantekeningen..."></textarea>
-                    <div v-if="errors.notes" class="invalid-feedback">{{ errors.notes }}</div>
+        <div class="col-sm-12 col-md-8 pe-0 ms-4 me-4">
+            <button class="btn btn-secondary mb-2" @click="goBack">Back</button>
+            <form @submit="onSubmit" class="medical-checkup-form bg-light shadow rounded pt-1 pb-3">
+                <h2 class="text-center mt-2">Medische controle</h2>
+                <div class="ms-4 me-4">
+                    <div class="mt-2">
+                        <label for="notes"><strong>Aantekeningen:</strong></label>
+                        <textarea class="col-12" rows="10" id="notes" v-model="notes" placeholder="Aantekeningen..."></textarea>
+                        <div v-if="errors.notes" class="invalid-feedback">{{ errors.notes }}</div>
+                    </div>
+                    <button class="medical-checkup-button btn btn-secondary btn-lg mt-3 col-12" type="submit">Opslaan</button>
                 </div>
-                <button class="medical-checkup-button btn btn-secondary btn-lg mt-3 col-12" type="submit">Opslaan</button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </template>
