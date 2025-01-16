@@ -114,9 +114,7 @@ const roomNumbers = Array.from({ length: 20 }, (_, i) => i + 1);
         </div>
         <div class="mt-3">
           <label>Ziektebeeld:</label>
-          <!-- <textarea class="col-12 form-control" rows="5" :class="{ 'is-invalid': errors.diseaseProfile }" v-model="diseaseProfile" placeholder="Ziektebeeld"></textarea>
-          <div v-if="errors.diseaseProfile" class="invalid-feedback">{{ errors.diseaseProfile }}</div> -->
-          <select class="form-select" id="diseaseProfile" v-model="diseaseProfile">
+          <select class="form-select" id="diseaseProfile" :class="{ 'is-invalid': errors.diseaseProfile }" v-model="diseaseProfile">
               <option disabled value="">Selecteer een ziektebeeld</option>
               <option v-for="diseaseProfile in diseaseProfiles"> {{ diseaseProfile }} </option>
           </select>
