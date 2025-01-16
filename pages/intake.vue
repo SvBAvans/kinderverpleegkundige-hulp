@@ -11,6 +11,26 @@ definePageMeta({
 const errorMessage = ref("");
 const error = ref(false);
 
+const diseaseProfiles = [
+  "waterpokken",
+  "mazelen",
+  "rodehond",
+  "bof",
+  "kinkhoest",
+  "scarlatina (rode hond)",
+  "RS-virus",
+  "longontsteking",
+  "griep (influenza)",
+  "oorontsteking",
+  "bronchiolitis",
+  "krentenbaard (impetigo)",
+  "middenoorontsteking",
+  "meningitis",
+  "hand-voet-mondziekte",
+  "gastro-enteritis",
+  "mononucleosis (ziekte van Pfeiffer)"
+];
+
 const schema = toTypedSchema(
   object({
     firstName: string().min(1, { message: "Voornaam is verplicht" }),
@@ -94,7 +114,10 @@ const roomNumbers = Array.from({ length: 20 }, (_, i) => i + 1);
         </div>
         <div class="mt-3">
           <label>Ziektebeeld:</label>
-          <textarea class="col-12 form-control" rows="5" :class="{ 'is-invalid': errors.diseaseProfile }" v-model="diseaseProfile" placeholder="Ziektebeeld"></textarea>
+          <select class="form-select" id="diseaseProfile" :class="{ 'is-invalid': errors.diseaseProfile }" v-model="diseaseProfile">
+              <option disabled value="">Selecteer een ziektebeeld</option>
+              <option v-for="diseaseProfile in diseaseProfiles"> {{ diseaseProfile }} </option>
+          </select>
           <div v-if="errors.diseaseProfile" class="invalid-feedback">{{ errors.diseaseProfile }}</div>
         </div>
         <div class="mt-3">
