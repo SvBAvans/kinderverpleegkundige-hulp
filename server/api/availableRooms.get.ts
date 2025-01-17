@@ -18,8 +18,9 @@ export default defineEventHandler(async (event) => {
   const assignedRoomNumbers = patients.map((patient) => String(patient.roomNr));
 
   const allRoomNumbers = Array.from({ length: 20 }, (_, i) => String(i + 1));
+  const neoRooms: string[] = ["Neo1A", "Neo1B", "Neo1C", "Neo1D", "Neo2A", "Neo2B", "Neo2C", "Neo2D"]
 
   const availableRooms = allRoomNumbers.filter((room) => !assignedRoomNumbers.includes(room));
 
-  return availableRooms;
+  return {rooms: availableRooms, neoRooms: neoRooms};
 });
