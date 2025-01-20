@@ -8,14 +8,15 @@ const emit = defineEmits<{
 }>();
 
 // @ts-expect-error bootstrap is available in the browser.
-let popoverInstances: bootstrap.Popover[] = [];
+let popoverInstances: Record<string, bootstrap.Popover> = {};
 
 const isCompareActive = ref(false);
-const compareResults = reactive({});
+const compareResults = reactive<Record<string, boolean>>({});
 
 const handleInnerButtonClick = (roomNr: string) => {
   if (isCompareActive.value) {
     isCompareActive.value = !isCompareActive.value;
+    updatePopoverContent();
     return;
   }
 
@@ -33,13 +34,28 @@ const handleInnerButtonClick = (roomNr: string) => {
     compareResults[res.roomNr] = res.match;
   });
 
-  console.log(compareResults);
   isCompareActive.value = !isCompareActive.value;
+
+  updatePopoverContent();
+};
+
+const updatePopoverContent = () => {
+  props.rooms.forEach((room) => {
+    const popover = popoverInstances[room.roomNr];
+    if (popover) {
+      const newContent = room.patient
+        ? `<div>${room.patient.diseaseProfile}<br/><button class='btn btn-success inner-button btn-sm' data-roomNr='${room.roomNr}'>${isCompareActive.value ? "Stop vergelijking" : "Vergelijk"}</button></div>`
+        : "Empty";
+      popover._config.content = newContent;
+    }
+  });
 };
 
 const initializePopovers = () => {
   const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-  popoverInstances = [...popoverTriggerList].map((triggerEl) => {
+  popoverTriggerList.forEach((triggerEl) => {
+    const roomNr = triggerEl.getAttribute("data-roomNr") as string;
+    if (!roomNr) return;
     // @ts-expect-error bootstrap is available in the browser.
     const popover = new bootstrap.Popover(triggerEl, {
       html: true,
@@ -59,7 +75,7 @@ const initializePopovers = () => {
       }
     });
 
-    return popover;
+    popoverInstances[roomNr] = popover;
   });
 };
 
@@ -94,6 +110,7 @@ onBeforeUnmount(() => {
         @click="emit('roomClick', room.roomNr)"
         data-bs-toggle="popover"
         data-bs-trigger="focus"
+        :data-roomNr="room.roomNr"
         :data-bs-title="room.patient ? `${room.patient.firstName} ${room.patient.lastName}` : ` `"
         :data-bs-content="
           room.patient
