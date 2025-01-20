@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { Patient } from "@prisma/client";
-import TooltipContentComponent from "./TooltipContentComponent.vue";
 
 const props = defineProps<{ rooms: { roomNr: string; patient?: Patient }[] }>();
 
@@ -8,22 +7,40 @@ const emit = defineEmits<{
   (e: "roomClick", room: string): void;
 }>();
 
-import { ref, onMounted, onBeforeUnmount } from "vue";
+// @ts-expect-error bootstrap is available in the browser.
 let popoverInstances: bootstrap.Popover[] = [];
 
-// Reactive state for toggling
-const toggleState = ref(false);
+const isCompareActive = ref(false);
+const compareResults = reactive({});
 
-// Function to handle button click inside the popover
-const handleInnerButtonClick = () => {
-  toggleState.value = !toggleState.value;
-  console.log("Inner button clicked! Toggle state:", toggleState.value);
+const handleInnerButtonClick = (roomNr: string) => {
+  if (isCompareActive.value) {
+    isCompareActive.value = !isCompareActive.value;
+    return;
+  }
+
+  const room = props.rooms.find((room) => room.roomNr == roomNr);
+  if (!room) return;
+
+  const disease = room.patient?.diseaseProfile;
+
+  const results = props.rooms.map((room) => {
+    room.match = room.patient?.diseaseProfile == disease;
+    return room;
+  });
+  const tempResult: any = {};
+  results.forEach((res) => {
+    compareResults[res.roomNr] = res.match;
+  });
+
+  console.log(compareResults);
+  isCompareActive.value = !isCompareActive.value;
 };
 
-// Initialize popovers and attach event listeners
 const initializePopovers = () => {
   const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
   popoverInstances = [...popoverTriggerList].map((triggerEl) => {
+    // @ts-expect-error bootstrap is available in the browser.
     const popover = new bootstrap.Popover(triggerEl, {
       html: true,
       trigger: "focus",
@@ -36,8 +53,8 @@ const initializePopovers = () => {
       if (popoverContent) {
         const innerButton = popoverContent.querySelector(".inner-button");
         if (innerButton) {
-          innerButton.removeEventListener("click", handleInnerButtonClick); // Avoid duplicate listeners
-          innerButton.addEventListener("click", handleInnerButtonClick);
+          innerButton.removeEventListener("click", handleInnerButtonClick);
+          innerButton.addEventListener("click", () => handleInnerButtonClick(innerButton.getAttribute("data-roomNr") as string));
         }
       }
     });
@@ -46,13 +63,11 @@ const initializePopovers = () => {
   });
 };
 
-// Clean up popovers
 const destroyPopovers = () => {
   popoverInstances.forEach((popover) => popover.dispose());
   popoverInstances = [];
 };
 
-// Initialize and clean up popovers in lifecycle hooks
 onMounted(() => {
   initializePopovers();
 });
@@ -67,12 +82,24 @@ onBeforeUnmount(() => {
     <template v-for="(room, index) in props.rooms">
       <a
         class="text-decoration-none text-reset col-4 border d-flex align-items-center border-black"
-        :class="{ 'justify-content-end': index % 2 == 0, 'bg-primary-subtle': room.patient != null, 'bg-secondary-subtle': room.patient == null }"
+        :class="[
+          {
+            'justify-content-end': index % 2 == 0,
+            'bg-primary-subtle': room.patient != null && !isCompareActive,
+            'bg-secondary-subtle': room.patient == null,
+            'bg-success': isCompareActive && compareResults[room.roomNr],
+            'bg-danger': isCompareActive && !compareResults[room.roomNr],
+          },
+        ]"
         @click="emit('roomClick', room.roomNr)"
         data-bs-toggle="popover"
         data-bs-trigger="focus"
         :data-bs-title="room.patient ? `${room.patient.firstName} ${room.patient.lastName}` : ` `"
-        :data-bs-content="room.patient ? `<div><button class='btn btn-success inner-button btn-sm'>Inner Button</button></div>` : 'Empty'"
+        :data-bs-content="
+          room.patient
+            ? `<div>${room.patient.diseaseProfile}<br/><button class='btn btn-success inner-button btn-sm' data-roomNr='${room.roomNr}'>${isCompareActive ? 'Stop vergelijking' : 'Vergelijk'}</button></div>`
+            : 'Empty'
+        "
         tabindex="0"
       >
         {{ room.roomNr }}
