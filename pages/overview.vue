@@ -10,7 +10,7 @@ definePageMeta({
 const viewDetails = (patientId: string) => {
   return async () => {
     try {
-      await router.push(`/patients/${patientId}`);
+      await navigateTo(`/patients/${patientId}`);
     } catch (error) {
       console.error("Trouble getting patient details:", error);
     }
