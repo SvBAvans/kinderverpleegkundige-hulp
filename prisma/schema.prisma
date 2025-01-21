@@ -26,6 +26,7 @@ model Patient {
   roomNr         String
   persciptions   Perscription[]
   savedPatients  SavedPatient[]
+  isBaby         Boolean @default(false)
 }
 
 model SavedPatient {
