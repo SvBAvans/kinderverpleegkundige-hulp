@@ -6,6 +6,8 @@ const toggleMenu = () => {
   menuVisible.value = !menuVisible.value;
 };
 
+const route = useRoute();
+
 const logout = () => {
   signOut();
   toggleMenu();
@@ -15,23 +17,28 @@ const { data: patients } = await useFetch("/api/patients");
 </script>
 
 <template>
-  <div class="menu-container">
-    <div class="header d-flex justify-content-start align-items-center px-3 py-2">
+  <div class="menu-container pb-3">
+    <div class="header d-flex justify-content-between align-items-center px-3 py-2">
       <div class="d-flex align-items-center justify-content-center" @click="toggleMenu">
-        <Icon name="charm:menu-hamburger" size="50px" />
+        <Icon name="charm:menu-hamburger" size="50px" class="menu-icon" />
       </div>
+
+      <h1 class="text-center flex-grow-1 me-5" v-if="route.meta.title">{{ route.meta.title }}</h1>
     </div>
 
     <transition name="slide">
       <div v-if="menuVisible" class="fullscreen-menu">
         <ul class="menu-list px-4">
           <!-- <li class="menu-item py-3">Overzicht kamers</li> -->
-          <li class="menu-item py-3"><NuxtLink to="/" @click="toggleMenu">Start dienst</NuxtLink></li>
+          <!-- <li class="menu-item py-3"><NuxtLink to="/" @click="toggleMenu">Start dienst</NuxtLink></li> -->
           <li class="menu-item py-3"><NuxtLink :to="`/patients/${patients![0].id}`" @click="toggleMenu">Patient Details</NuxtLink></li>
+          <li class="menu-item py-3"><NuxtLink :to="`/floormap`" @click="toggleMenu">Floormap</NuxtLink></li>
+          <li class="menu-item py-3"><NuxtLink to="/overview" @click="toggleMenu">Overzicht</NuxtLink></li>
+          <li class="menu-item py-3"><NuxtLink to="/intake" @click="toggleMenu">Intake</NuxtLink></li>
         </ul>
 
         <div class="logout-section">
-          <button class="btn-logout" @click="logout">Logout</button>
+          <button class="btn-logout btn btn-primary" @click="logout">Logout</button>
         </div>
 
         <button class="btn-close-menu" @click="toggleMenu" aria-label="Close">&times;</button>
@@ -44,9 +51,11 @@ const { data: patients } = await useFetch("/api/patients");
 .menu-container {
   width: 100%;
   /* height: 100vh; */
-  background-color: #fff;
+  background-color: #2c3e50;
   display: flex;
   flex-direction: column;
+  color: white;
+  text-align: center;
 }
 
 .header {
@@ -54,19 +63,23 @@ const { data: patients } = await useFetch("/api/patients");
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 60px; /* Set a fixed height */
+  background-color: #2c3e50;
+  display: flex;
+  align-items: center; /* Vertically center content */
 }
 
-.icon-circle {
-  width: 50px;
-  height: 50px;
-  background-color: black;
-  border-radius: 50%;
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.menu-icon {
+  color: #ecf0f1;
+}
+
+.header .d-flex {
+  height: 100%;
+}
+
+.header .d-flex .icon {
+  font-size: 30px; /* Adjust icon size */
 }
 
 .fullscreen-menu {
@@ -117,17 +130,12 @@ const { data: patients } = await useFetch("/api/patients");
 }
 
 .btn-logout {
-  background-color: #e74c3c;
   border: none;
   color: white;
   padding: 12px 24px;
   font-size: 1.2rem;
   cursor: pointer;
   border-radius: 5px;
-}
-
-.btn-logout:hover {
-  background-color: #c0392b;
 }
 
 .btn-outline-light {

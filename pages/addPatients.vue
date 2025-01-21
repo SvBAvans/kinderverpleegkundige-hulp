@@ -1,6 +1,17 @@
 <script setup lang="ts">
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useFetch } from "#app";
+
 const addedPatients = ref<Set<string>>(new Set());
 const search = ref<string>("");
+const router = useRouter();
+
+definePageMeta({
+  title: "Voeg patient toe",
+});
+
+const {data: authData} = useAuth();
 
 const { data: patient } = await useFetch(`/api/patients`);
 
@@ -13,44 +24,59 @@ const togglePatient = (id: string) => {
   }
 };
 
-//in the console for now --  TODO: add to db
-const savePatients = () => {
-  console.log("Saved patients:", Array.from(addedPatients.value));
-  alert("Dienst aanmaken\n" + Array.from(addedPatients.value).join("\n"));
+const savePatients = async () => {
+  const patientIds = Array.from(addedPatients.value);
+
+  if (patientIds.length === 0) {
+    alert("Nog geen patiënten geselecteerd.");
+    return;
+  }
+
+  try {
+    const userId = authData.value?.user.userId;
+    await $fetch("/api/patients/save", {
+      method: "POST",
+      body: { userId, patientIds },
+    });
+
+    alert("Patiënten opgeslagen");
+    router.push("/overview");
+  } catch (error: any) {
+    alert(`error: ${error.data.message}`);
+    console.error(error);
+  }
 };
 
 const filteredPatients = computed(() => {
   return patient.value?.filter((patient: any) => {
     const query = search.value.toLowerCase();
-    return patient.firstName.toLowerCase().includes(query);
-    // || patient.roomNumber.toString().includes(query)
+    return patient.firstName.toLowerCase().includes(query) || patient.lastName.toLowerCase().includes(query);
   });
 });
 </script>
 
 <template>
   <div class="container py-5 d-flex flex-column" style="min-height: 100vh">
-    <h2 class="text-center mb-4">Voeg patiënt toe</h2>
-    <input class="form-control mb-3" type="text" v-model="search" placeholder="Search..." />
+    <input class="form-control mb-3 mt-3 bg-white" type="text" v-model="search" placeholder="Search..." />
     <hr />
 
     <div class="flex-grow-1 overflow-auto">
-      <div v-for="patient in filteredPatients" :key="patient.id" class="card p-3 shadow-sm mb-3">
+      <div v-for="patient in filteredPatients" :key="patient.id" class="card p-3 shadow-sm mb-3 bg-white">
         <div class="card-body">
           <div class="row">
             <div class="col-6 d-flex flex-column justify-content-center">
               <p class="mb-1">
-                <strong>{{ patient.firstName }}</strong>
+                <strong>{{ patient.firstName }} {{ patient.lastName }}</strong>
               </p>
               <p class="text-muted mb-0">{{ patient.dateOfBirth }}</p>
             </div>
 
             <div class="col-6 d-flex align-items-center justify-content-end">
-              <p class="me-2 mb-0">kamer: [roomnr]</p>
+              <p class="me-2 mb-0">kamer: {{ patient.roomNr }}</p>
               <Icon
                 :name="addedPatients.has(patient.id) ? 'bi:check-circle' : 'bi:plus'"
                 class="fs-3 bi"
-                :style="{ color: addedPatients.has(patient.id) ? '#10b981' : '#3b82f6' }"
+                :style="{ color: addedPatients.has(patient.id) ? '#10b981' : '#50a399' }"
                 @click="togglePatient(patient.id)"
               ></Icon>
             </div>
@@ -107,7 +133,6 @@ button:active {
 .sticky-bottom {
   position: sticky;
   bottom: 0;
-  background: white;
   padding-top: 10px;
 }
 </style>

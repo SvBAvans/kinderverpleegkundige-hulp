@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { toTypedSchema } from "@vee-validate/zod";
-import { object, string } from "zod";
+import { boolean, number, object, string } from "zod";
 import type { FetchError } from "ofetch";
 import type { Patient } from "@prisma/client";
 
@@ -11,6 +11,26 @@ import type { Patient } from "@prisma/client";
 const errorMessage = ref("");
 const error = ref(false);
 
+const diseaseProfiles = [
+  "waterpokken",
+  "mazelen",
+  "rodehond",
+  "bof",
+  "kinkhoest",
+  "scarlatina (rode hond)",
+  "RS-virus",
+  "longontsteking",
+  "griep (influenza)",
+  "oorontsteking",
+  "bronchiolitis",
+  "krentenbaard (impetigo)",
+  "middenoorontsteking",
+  "meningitis",
+  "hand-voet-mondziekte",
+  "gastro-enteritis",
+  "mononucleosis (ziekte van Pfeiffer)"
+];
+
 const schema = toTypedSchema(
   object({
     firstName: string().min(1, { message: "Voornaam is verplicht" }),
@@ -18,6 +38,8 @@ const schema = toTypedSchema(
     patientId: string().min(1, { message: "PatientID is verplicht" }),
     dateOfBirth: string({ required_error: "Geboortedatum is verplicht" }).date(),
     diseaseProfile: string().min(1, { message: "Ziektebeeld is verplicht " }),
+    roomNr: string(),
+    isBaby: boolean()
   })
 );
 
@@ -30,6 +52,8 @@ const { value: lastName } = useField("lastName");
 const { value: patientId } = useField("patientId");
 const { value: dateOfBirth } = useField("dateOfBirth");
 const { value: diseaseProfile } = useField<string>("diseaseProfile");
+const { value: roomNr } = useField<string>("roomNr");
+const { value: isBaby } = useField<boolean>("isBaby");
 
 async function createPatient(values: any) {
   values.dateOfBirth = new Date(values.dateOfBirth);
@@ -51,9 +75,14 @@ async function createPatient(values: any) {
   navigateTo(`patients/${response.id}`);
 }
 
+const {data: roomData } = await useFetch("/api/availableRooms");
+
 const onSubmit = handleSubmit(async (values) => {
+  values.roomNr = values.roomNr.toString() as any;
   createPatient(values);
 });
+
+
 </script>
 
 <template>
@@ -70,6 +99,10 @@ const onSubmit = handleSubmit(async (values) => {
           <input class="form-control input-lg border border-secondary" :class="{ 'is-invalid': errors.lastName }" id="lastName" type="text" v-model="lastName" placeholder="Achternaam" />
           <div v-if="errors.lastName" class="invalid-feedback">{{ errors.lastName }}</div>
         </div>
+        <div class="form-check form-switch mt-3">
+          <label class="form-check-label" for="isBaby">Baby</label>
+          <input class="form-check-input" type="checkbox" role="switch" id="isBaby" name="isBaby" v-model="isBaby">
+        </div>
         <div class="mt-3">
           <label for="patientID">Patient-ID:</label>
           <input class="form-control input-lg border border-secondary" :class="{ 'is-invalid': errors.patientId }" id="patientID" type="text" v-model="patientId" placeholder="Patient-ID" />
@@ -82,8 +115,20 @@ const onSubmit = handleSubmit(async (values) => {
         </div>
         <div class="mt-3">
           <label>Ziektebeeld:</label>
-          <textarea class="col-12" rows="5" :class="{ 'is-invalid': errors.diseaseProfile }" v-model="diseaseProfile" placeholder="Ziektebeeld"></textarea>
+          <select class="form-select" id="diseaseProfile" :class="{ 'is-invalid': errors.diseaseProfile }" v-model="diseaseProfile">
+              <option disabled value="">Selecteer een ziektebeeld</option>
+              <option v-for="diseaseProfile in diseaseProfiles"> {{ diseaseProfile }} </option>
+          </select>
           <div v-if="errors.diseaseProfile" class="invalid-feedback">{{ errors.diseaseProfile }}</div>
+        </div>
+        <div class="mt-3">
+          <label>Kamer Nummer:</label>
+          <select class="form-select" aria-label="Default select example" v-model="roomNr" id="roomNr">
+            <option disabled value="">Selecteer een kamer</option>
+            <option v-for="room in (isBaby ? roomData?.neoRooms : roomData?.rooms)" :key="room" :value="room">
+              {{ room }}
+            </option>
+          </select>
         </div>
         <button class="intake-button btn btn-secondary btn-lg mt-3 col-12" type="submit">Afronden</button>
       </div>
