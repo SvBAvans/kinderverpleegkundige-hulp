@@ -105,7 +105,6 @@ button {
 }
 
 button:hover {
-  background-color: #2563eb;
   transform: scale(1.03);
 }
 
