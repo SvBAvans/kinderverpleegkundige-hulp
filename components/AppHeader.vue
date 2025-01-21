@@ -29,12 +29,9 @@ const { data: patients } = await useFetch("/api/patients");
     <transition name="slide">
       <div v-if="menuVisible" class="fullscreen-menu">
         <ul class="menu-list px-4">
-          <!-- <li class="menu-item py-3">Overzicht kamers</li> -->
-          <!-- <li class="menu-item py-3"><NuxtLink to="/" @click="toggleMenu">Start dienst</NuxtLink></li> -->
-          <li class="menu-item py-3"><NuxtLink :to="`/patients/${patients![0].id}`" @click="toggleMenu">Patient Details</NuxtLink></li>
-          <li class="menu-item py-3"><NuxtLink :to="`/floormap`" @click="toggleMenu">Floormap</NuxtLink></li>
           <li class="menu-item py-3"><NuxtLink to="/overview" @click="toggleMenu">Overzicht</NuxtLink></li>
           <li class="menu-item py-3"><NuxtLink to="/intake" @click="toggleMenu">Intake</NuxtLink></li>
+          <li class="menu-item py-3"><NuxtLink :to="`/floormap`" @click="toggleMenu">Kamers</NuxtLink></li>
         </ul>
 
         <div class="logout-section">

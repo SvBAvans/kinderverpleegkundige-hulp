@@ -1,8 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import type { FetchError } from "ofetch";
 import type { Patient } from "@prisma/client";
-
-const route = useRoute();
 
 definePageMeta({
   title: "Patient Details",
@@ -145,8 +143,8 @@ async function confirmDelete() {
   color: #fff;
 }
 .accordion-button:focus {
-  border-color: #50a399 !important; 
-  box-shadow: 0 0 0 0.25rem rgba(80, 163, 153, 0.5); 
+  border-color: #50a399 !important;
+  box-shadow: 0 0 0 0.25rem rgba(80, 163, 153, 0.5);
   outline: none;
 }
 .accordion-body {
@@ -162,7 +160,7 @@ async function confirmDelete() {
 }
 
 .user-profile {
-  background-color: #F4A261;
+  background-color: #f4a261;
 }
 
 .plus-icon {

@@ -4,9 +4,9 @@ import { boolean, number, object, string } from "zod";
 import type { FetchError } from "ofetch";
 import type { Patient } from "@prisma/client";
 
-// definePageMeta({
-//   middleware: "sidebase-auth",
-// });
+definePageMeta({
+  title: "Patient Intake",
+});
 
 const errorMessage = ref("");
 const error = ref(false);
@@ -28,7 +28,7 @@ const diseaseProfiles = [
   "meningitis",
   "hand-voet-mondziekte",
   "gastro-enteritis",
-  "mononucleosis (ziekte van Pfeiffer)"
+  "mononucleosis (ziekte van Pfeiffer)",
 ];
 
 const schema = toTypedSchema(
@@ -39,7 +39,7 @@ const schema = toTypedSchema(
     dateOfBirth: string({ required_error: "Geboortedatum is verplicht" }).date(),
     diseaseProfile: string().min(1, { message: "Ziektebeeld is verplicht " }),
     roomNr: string(),
-    isBaby: boolean()
+    isBaby: boolean(),
   })
 );
 
@@ -75,18 +75,16 @@ async function createPatient(values: any) {
   navigateTo(`patients/${response.id}`);
 }
 
-const {data: roomData } = await useFetch("/api/availableRooms");
+const { data: roomData } = await useFetch("/api/availableRooms");
 
 const onSubmit = handleSubmit(async (values) => {
   values.roomNr = values.roomNr.toString() as any;
   createPatient(values);
 });
-
-
 </script>
 
 <template>
-  <div class="d-md-flex vh-100 justify-content-center align-items-center">
+  <div class="intake-div d-md-flex justify-content-center align-items-center mt-5">
     <form @submit="onSubmit" class="intake-form col-sm-12 col-md-8 pe-0 ms-4 me-4 bg-light shadow rounded pt-1 pb-3">
       <div class="ms-4 me-4">
         <div class="mt-2">
@@ -101,7 +99,7 @@ const onSubmit = handleSubmit(async (values) => {
         </div>
         <div class="form-check form-switch mt-3">
           <label class="form-check-label" for="isBaby">Baby</label>
-          <input class="form-check-input" type="checkbox" role="switch" id="isBaby" name="isBaby" v-model="isBaby">
+          <input class="form-check-input" type="checkbox" role="switch" id="isBaby" name="isBaby" v-model="isBaby" />
         </div>
         <div class="mt-3">
           <label for="patientID">Patient-ID:</label>
@@ -116,8 +114,8 @@ const onSubmit = handleSubmit(async (values) => {
         <div class="mt-3">
           <label>Ziektebeeld:</label>
           <select class="form-select" id="diseaseProfile" :class="{ 'is-invalid': errors.diseaseProfile }" v-model="diseaseProfile">
-              <option disabled value="">Selecteer een ziektebeeld</option>
-              <option v-for="diseaseProfile in diseaseProfiles"> {{ diseaseProfile }} </option>
+            <option disabled value="">Selecteer een ziektebeeld</option>
+            <option v-for="diseaseProfile in diseaseProfiles">{{ diseaseProfile }}</option>
           </select>
           <div v-if="errors.diseaseProfile" class="invalid-feedback">{{ errors.diseaseProfile }}</div>
         </div>
@@ -125,18 +123,24 @@ const onSubmit = handleSubmit(async (values) => {
           <label>Kamer Nummer:</label>
           <select class="form-select" aria-label="Default select example" v-model="roomNr" id="roomNr">
             <option disabled value="">Selecteer een kamer</option>
-            <option v-for="room in (isBaby ? roomData?.neoRooms : roomData?.rooms)" :key="room" :value="room">
+            <option v-for="room in isBaby ? roomData?.neoRooms : roomData?.rooms" :key="room" :value="room">
               {{ room }}
             </option>
           </select>
         </div>
-        <button class="intake-button btn btn-secondary btn-lg mt-3 col-12" type="submit">Afronden</button>
+        <button class="intake-button btn btn-primary btn-lg mt-3 col-12" type="submit">Afronden</button>
       </div>
     </form>
   </div>
 </template>
 
 <style>
+.intake-div {
+  padding-top: 20px;
+  margin-bottom: 0;
+  overflow-y: auto;
+}
+
 @media screen and (min-width: 768px) {
   .intake-form {
     font-size: 25px;
