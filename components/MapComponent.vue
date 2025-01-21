@@ -97,9 +97,12 @@ onBeforeUnmount(() => {
   <div class="row h-100 pt-3">
     <template v-for="(room, index) in props.rooms">
       <a
-        class="text-decoration-none text-reset col-4 border d-flex align-items-center border-black"
+        class="text-decoration-none text-reset col-4 d-flex align-items-center border-black"
         :class="[
           {
+            border: !room.roomNr.includes('neo'),
+            'border-start border-end': room.roomNr.includes('neo'),
+            'border-bottom': props.rooms.length - index <= 2,
             'justify-content-end': index % 2 == 0,
             'bg-primary-subtle': room.patient != null && !isCompareActive,
             'bg-secondary-subtle': room.patient == null,
@@ -122,7 +125,7 @@ onBeforeUnmount(() => {
         {{ room.roomNr }}
       </a>
 
-      <div v-if="index % 2 == 0 && props.rooms.length >= index + 2" class="col-4" :class="{ 'border-top border-black': props.rooms.length < index + 3 }"></div>
+      <div v-if="index % 2 == 0 && props.rooms.length >= index + 2" class="col-4" :class="{ 'border-top border-black': props.rooms.length - index == 8 }"></div>
     </template>
   </div>
 </template>
