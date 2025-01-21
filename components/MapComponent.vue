@@ -44,7 +44,7 @@ const updatePopoverContent = () => {
     const popover = popoverInstances[room.roomNr];
     if (popover) {
       const newContent = room.patient
-        ? `<div>${room.patient.diseaseProfile}<br/><button class='btn btn-primary inner-button btn-sm' data-roomNr='${room.roomNr}'>${isCompareActive.value ? "Stop vergelijking" : "Vergelijk"}</button></div>`
+        ? `<div>${room.patient.diseaseProfile}<br/><button class='btn btn-primary inner-button btn-sm mt-3 w-100' data-roomNr='${room.roomNr}'>${isCompareActive.value ? "Stop vergelijking" : "Vergelijk"}</button></div>`
         : "Empty";
       popover._config.content = newContent;
     }
@@ -114,9 +114,10 @@ onBeforeUnmount(() => {
         :data-bs-title="room.patient ? `${room.patient.firstName} ${room.patient.lastName}` : ` `"
         :data-bs-content="
           room.patient
-            ? `<div>${room.patient.diseaseProfile}<br/><button class='btn btn-primary inner-button btn-sm' data-roomNr='${room.roomNr}'>${isCompareActive ? 'Stop vergelijking' : 'Vergelijk'}</button></div>`
+            ? `<div class='popover-content'>${room.patient.diseaseProfile}<br/><button class='btn btn-primary inner-button btn-sm mt-3 w-100' data-roomNr='${room.roomNr}'>${isCompareActive ? 'Stop vergelijking' : 'Vergelijk'}</button></div>`
             : 'Empty'
         "
+        data-bs-custom-class="custom-popover"
         tabindex="0"
       >
         {{ room.roomNr }}
@@ -127,4 +128,14 @@ onBeforeUnmount(() => {
   </div>
 </template>
 
-<style scoped></style>
+<style>
+  .custom-popover {
+    min-width: 200px;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+
+  .popover-content {
+    display: block;
+  }
+</style>
