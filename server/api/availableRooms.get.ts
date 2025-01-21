@@ -21,6 +21,7 @@ export default defineEventHandler(async (event) => {
   const neoRooms: string[] = ["Neo1A", "Neo1B", "Neo1C", "Neo1D", "Neo2A", "Neo2B", "Neo2C", "Neo2D"]
 
   const availableRooms = allRoomNumbers.filter((room) => !assignedRoomNumbers.includes(room));
+  const availableNeoRooms = neoRooms.filter((room) => !assignedRoomNumbers.includes(room));
 
-  return {rooms: availableRooms, neoRooms: neoRooms};
+  return {rooms: availableRooms, neoRooms: availableNeoRooms};
 });

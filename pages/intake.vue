@@ -18,7 +18,7 @@ const schema = toTypedSchema(
     patientId: string().min(1, { message: "PatientID is verplicht" }),
     dateOfBirth: string({ required_error: "Geboortedatum is verplicht" }).date(),
     diseaseProfile: string().min(1, { message: "Ziektebeeld is verplicht " }),
-    roomNr: number(),
+    roomNr: string(),
     isBaby: boolean()
   })
 );
@@ -33,7 +33,7 @@ const { value: patientId } = useField("patientId");
 const { value: dateOfBirth } = useField("dateOfBirth");
 const { value: diseaseProfile } = useField<string>("diseaseProfile");
 const { value: roomNr } = useField<string>("roomNr");
-const { value: isBaby } = useField<boolean>("baby");
+const { value: isBaby } = useField<boolean>("isBaby");
 
 async function createPatient(values: any) {
   values.dateOfBirth = new Date(values.dateOfBirth);
@@ -80,8 +80,8 @@ const onSubmit = handleSubmit(async (values) => {
           <div v-if="errors.lastName" class="invalid-feedback">{{ errors.lastName }}</div>
         </div>
         <div class="form-check form-switch mt-3">
-          <label class="form-check-label" for="baby">Baby</label>
-          <input class="form-check-input" type="checkbox" role="switch" id="baby" name="baby" v-model="isBaby">
+          <label class="form-check-label" for="isBaby">Baby</label>
+          <input class="form-check-input" type="checkbox" role="switch" id="isBaby" name="isBaby" v-model="isBaby">
         </div>
         <div class="mt-3">
           <label for="patientID">Patient-ID:</label>
