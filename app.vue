@@ -6,7 +6,12 @@
 
 <style>
 :root {
-  --bs-body-bg: #ecf0f1
+  --bs-body-bg: #ecf0f1;
+  --bs-primary-rgb: 80, 163, 153;
+}
+
+.bg-primary {
+  background-color: #50a399 !important;
 }
 
 .btn-primary {
