@@ -49,9 +49,17 @@
     .accordion {
     margin: 0;
     }
+    
     .accordion-button {
     font-size: 1rem;
     }
+
+    .accordion-button:focus {
+    border-color: #50a399 !important;
+    box-shadow: 0 0 0 0.25rem rgba(80, 163, 153, 0.5);
+    outline: none;
+    }
+
     .accordion-body {
     font-size: 0.9rem;
     padding: 5px 10px;

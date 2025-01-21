@@ -8,6 +8,8 @@
 :root {
   --bs-body-bg: #ecf0f1;
   --bs-primary-rgb: 80, 163, 153;
+  --bs-primary-bg-subtle: rgba(80, 163, 153, 0.25);
+  --bs-primary-text-emphasis: black;
 }
 
 .bg-primary {

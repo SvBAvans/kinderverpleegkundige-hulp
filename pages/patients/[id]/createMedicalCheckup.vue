@@ -64,7 +64,7 @@ import { object, string } from 'zod';
                         <textarea class="col-12" rows="10" id="notes" v-model="notes" placeholder="Aantekeningen..."></textarea>
                         <div v-if="errors.notes" class="invalid-feedback">{{ errors.notes }}</div>
                     </div>
-                    <button class="medical-checkup-button btn btn-secondary btn-lg mt-3 col-12" type="submit">Opslaan</button>
+                    <button class="medical-checkup-button btn btn-primary btn-lg mt-3 col-12" type="submit">Opslaan</button>
                 </div>
             </form>
         </div>
