@@ -1,6 +1,8 @@
-<script setup lang="ts">
+<script setup>
 import type { FetchError } from "ofetch";
 import type { Patient } from "@prisma/client";
+
+const route = useRoute();
 
 definePageMeta({
   title: "Patient Details",
@@ -54,10 +56,12 @@ async function confirmDelete() {
     </div>
 
     <div class="divider"></div>
-
+    <div>
+      <NuxtLink :to="`/patients/${patientId}/medicalLogbook`" class="btn btn-primary mb-3 col-12">Medisch logbook</NuxtLink>
+    </div>
     <section class="mb-3">
       <h3 class="h6">Ziektebeeld:</h3>
-      <p>{{ patient?.diseaseProfile }}</p>
+      <p>{{ patient.diseaseProfile }}</p>
     </section>
 
     <div class="divider"></div>
