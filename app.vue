@@ -6,13 +6,20 @@
 
 <style>
 :root {
-  --bs-body-bg: #ecf0f1
+  --bs-body-bg: #ecf0f1;
+  --bs-primary-rgb: 80, 163, 153;
+  --bs-primary-bg-subtle: rgba(80, 163, 153, 0.25);
+  --bs-primary-text-emphasis: black;
+}
+
+.bg-primary {
+  background-color: #50a399 !important;
 }
 
 .btn-primary {
   --bs-btn-bg: #50a399;
   --bs-btn-hover-bg: #4a988e;
-  --bs-btn-hover-border-color: #4a988e;
+  --bs-btn-hover-border-color: #4a988e !important;
   --bs-btn-active-bg: #4a988e;
   --bs-btn-active-border-color: #4a988e;
   --bs-btn-border-color: #50a399;

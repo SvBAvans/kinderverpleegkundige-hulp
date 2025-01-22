@@ -19,8 +19,9 @@ export default defineEventHandler(async (event) => {
       id: patientId,
     },
     include: {
-      persciptions: true
-    }
+      medicalCheckups: true,
+      persciptions: true,
+    },
   });
 
   if (!patient) {

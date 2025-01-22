@@ -54,10 +54,12 @@ async function confirmDelete() {
     </div>
 
     <div class="divider"></div>
-
+    <div>
+      <NuxtLink :to="`/patients/${patientId}/medicalLogbook`" class="btn btn-primary mb-3 col-12">Medisch logbook</NuxtLink>
+    </div>
     <section class="mb-3">
       <h3 class="h6">Ziektebeeld:</h3>
-      <p>{{ patient?.diseaseProfile }}</p>
+      <p>{{ patient.diseaseProfile }}</p>
     </section>
 
     <div class="divider"></div>
@@ -141,8 +143,8 @@ async function confirmDelete() {
   color: #fff;
 }
 .accordion-button:focus {
-  border-color: #50a399 !important; 
-  box-shadow: 0 0 0 0.25rem rgba(80, 163, 153, 0.5); 
+  border-color: #50a399 !important;
+  box-shadow: 0 0 0 0.25rem rgba(80, 163, 153, 0.5);
   outline: none;
 }
 .accordion-body {
@@ -158,7 +160,7 @@ async function confirmDelete() {
 }
 
 .user-profile {
-  background-color: #F4A261;
+  background-color: #f4a261;
 }
 
 .plus-icon {

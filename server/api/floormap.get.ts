@@ -20,8 +20,14 @@ export default defineEventHandler(async (event) => {
     { roomNr: "6" },
     { roomNr: "7" },
     { roomNr: "8" },
-    { roomNr: "neo-1" },
-    { roomNr: "neo-2" },
+    { roomNr: "neo1-a" },
+    { roomNr: "neo2-a" },
+    { roomNr: "neo1-b" },
+    { roomNr: "neo2-b" },
+    { roomNr: "neo1-c" },
+    { roomNr: "neo2-c" },
+    { roomNr: "neo1-d" },
+    { roomNr: "neo2-d" },
   ];
 
   rooms.forEach((room) => {

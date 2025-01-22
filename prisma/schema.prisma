@@ -26,6 +26,16 @@ model Patient {
   roomNr         String
   persciptions   Perscription[]
   savedPatients  SavedPatient[]
+  isBaby         Boolean @default(false)
+  medicalCheckups MedicalCheckup[]
+ }
+ 
+model MedicalCheckup {
+  id        String   @id @default(uuid())
+  notes     String
+  timestamp DateTime
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  patientId String
 }
 
 model SavedPatient {
