@@ -12,7 +12,7 @@
   "dependencies": {
     "@nuxt/icon": "1.10.2",
     "@prisma/client": "^6.2.1",
-    "@sidebase/nuxt-auth": "0.10.0",
+    "@sidebase/nuxt-auth": "^0.10.1-alpha.1",
     "@vee-validate/nuxt": "^4.15.0",
     "@vee-validate/zod": "^4.15.0",
     "bcrypt": "^5.1.1",
