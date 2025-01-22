@@ -85,7 +85,7 @@ const onSubmit = handleSubmit(async (values) => {
 
 <template>
   <div class="intake-div d-md-flex justify-content-center align-items-center mt-5">
-    <form @submit="onSubmit" class="intake-form col-sm-12 col-md-8 pe-0 ms-4 me-4 bg-light shadow rounded pt-1 pb-3">
+    <form @submit="onSubmit" class="intake-form col-sm-12 col-md-8 pe-0 mx-auto bg-light shadow rounded pt-1 pb-3">
       <div class="ms-4 me-4">
         <div class="mt-2">
           <label for="firstName" class="form-label">Voornaam:</label>
