@@ -30,8 +30,8 @@ function updateSelectedMedicineLink(event: Event) {
 const schema = toTypedSchema(
   object({
     name: string({ required_error: "Medicijn is verplicht" }),
-    dosage: string().min(1, { message: "Dosering is verplicht " }),
-    recurrance: string().min(1, { message: "Herhaling is verplicht " }),
+    dosage: string({ required_error: "Dosering is verplicht " }),
+    recurrance: string({ required_error: "Herhaling is verplicht " }),
     notes: string().default(""),
   })
 );
@@ -73,15 +73,15 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 
 <template>
-  <div class="d-md-flex flex-column vh-100 justify-content-center align-items-center mt-5">
-    <div class="col-sm-12 col-md-8 pe-0 ms-4 me-4">
+  <div class="d-md-flex flex-column vh-100 justify-content-center align-items-center mt-5 mx-4">
+    <div class="col-sm-12 col-md-8 pe-0">
       <div class="text-start mb-3">
         <button class="btn btn-primary mt-3" @click="goBack">Back</button>
       </div>
 
       <form @submit="onSubmit" class="medicine-form bg-light shadow rounded pt-1 pb-3">
         <h4 class="text-center mt-2">Voeg medicijn toe</h4>
-        <div class="ms-4 me-4">
+        <div class="mx-4">
           <div class="mt-2">
             <label for="name">Medicijn</label>
             <select class="form-select" id="name" v-model="name" @change="updateSelectedMedicineLink">

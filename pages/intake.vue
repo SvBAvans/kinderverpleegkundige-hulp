@@ -33,13 +33,13 @@ const diseaseProfiles = [
 
 const schema = toTypedSchema(
   object({
-    firstName: string().min(1, { message: "Voornaam is verplicht" }),
-    lastName: string().min(1, { message: "Achternaam is verplicht" }),
-    patientId: string().min(1, { message: "PatientID is verplicht" }),
+    firstName: string({ required_error: "Voornaam is verplicht" }),
+    lastName: string({ required_error: "Achternaam is verplicht" }),
+    patientId: string({ required_error: "PatientID is verplicht" }),
     dateOfBirth: string({ required_error: "Geboortedatum is verplicht" }).date(),
-    diseaseProfile: string().min(1, { message: "Ziektebeeld is verplicht " }),
-    roomNr: string(),
-    isBaby: boolean(),
+    diseaseProfile: string({ required_error: "Ziektebeeld is verplicht " }),
+    roomNr: string({ required_error: "Kamer nummer is verplicht " }),
+    isBaby: boolean().default(false),
   })
 );
 
@@ -84,8 +84,8 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 
 <template>
-  <div class="intake-div d-md-flex justify-content-center align-items-center mt-5">
-    <form @submit="onSubmit" class="intake-form col-sm-12 col-md-8 pe-0 mx-auto bg-light shadow rounded pt-1 pb-3">
+  <div class="intake-div d-md-flex justify-content-center align-items-center mt-5 mx-4">
+    <form @submit="onSubmit" class="intake-form col-sm-12 col-md-8 pe-0 bg-light shadow rounded pt-1 pb-3">
       <div class="ms-4 me-4">
         <div class="mt-2">
           <label for="firstName" class="form-label">Voornaam:</label>
@@ -121,38 +121,16 @@ const onSubmit = handleSubmit(async (values) => {
         </div>
         <div class="mt-3">
           <label>Kamer Nummer:</label>
-          <select class="form-select" aria-label="Default select example" v-model="roomNr" id="roomNr">
+          <select class="form-select" :class="{ 'is-invalid': errors.diseaseProfile }" v-model="roomNr" id="roomNr">
             <option disabled value="">Selecteer een kamer</option>
             <option v-for="room in isBaby ? roomData?.neoRooms : roomData?.rooms" :key="room" :value="room">
               {{ room }}
             </option>
           </select>
+          <div v-if="errors.roomNr" class="invalid-feedback">{{ errors.roomNr }}</div>
         </div>
         <button class="intake-button btn btn-primary btn-lg mt-3 col-12" type="submit">Afronden</button>
       </div>
     </form>
   </div>
 </template>
-
-<style>
-.intake-div {
-  padding-top: 20px;
-  margin-bottom: 0;
-  overflow-y: auto;
-}
-
-@media screen and (min-width: 768px) {
-  .intake-form {
-    font-size: 25px;
-  }
-
-  input.form-control {
-    font-size: 22px;
-    padding: 15px;
-  }
-
-  button.intake-button {
-    font-size: 25px;
-  }
-}
-</style>
