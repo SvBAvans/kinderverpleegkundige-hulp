@@ -13,8 +13,6 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    console.log("Saving patients for user:", userId, "Patients:", patientIds);
-
     const savedPatients = patientIds.map((patientId) => ({
       userId,
       patientId,

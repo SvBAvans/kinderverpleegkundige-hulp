@@ -27,8 +27,6 @@ const endShift = async () => {
 
       if (response?.status === 200) {
         alert("Dienst beëindigd.");
-        // when works:
-        console.log("shift ended");
         signOut();
       } else {
         alert("Dienst kon niet beëindigd worden.");
@@ -36,8 +34,6 @@ const endShift = async () => {
     } catch (error) {
       console.error("error ending shift:", error);
     }
-  } else {
-    console.log("shift not ended");
   }
 };
 
