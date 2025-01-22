@@ -80,8 +80,8 @@ const initializePopovers = () => {
 };
 
 const destroyPopovers = () => {
-  popoverInstances.forEach((popover) => popover.dispose());
-  popoverInstances = [];
+  Object.values(popoverInstances).forEach((popover) => popover.dispose());
+  popoverInstances = {};
 };
 
 onMounted(() => {
@@ -117,7 +117,9 @@ onBeforeUnmount(() => {
         :data-bs-title="room.patient ? `${room.patient.firstName} ${room.patient.lastName}` : ` `"
         :data-bs-content="
           room.patient
-            ? `<div class='popover-content'>${room.patient.diseaseProfile}<br/><button class='btn btn-primary inner-button btn-sm mt-3 w-100' data-roomNr='${room.roomNr}'>${isCompareActive ? 'Stop vergelijking' : 'Vergelijk'}</button></div>`
+            ? `<div class='popover-content'>${room.patient.diseaseProfile}<br/><button class='btn btn-primary inner-button btn-sm mt-3 w-100' data-roomNr='${room.roomNr}'>${
+                isCompareActive ? 'Stop vergelijking' : 'Vergelijk'
+              }</button></div>`
             : 'Empty'
         "
         data-bs-custom-class="custom-popover"
@@ -132,13 +134,13 @@ onBeforeUnmount(() => {
 </template>
 
 <style>
-  .custom-popover {
-    min-width: 200px;
-    word-wrap: break-word;
-    white-space: normal;
-  }
+.custom-popover {
+  min-width: 200px;
+  word-wrap: break-word;
+  white-space: normal;
+}
 
-  .popover-content {
-    display: block;
-  }
+.popover-content {
+  display: block;
+}
 </style>
