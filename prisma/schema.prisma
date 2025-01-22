@@ -17,19 +17,19 @@ model User {
 }
 
 model Patient {
-  id             String         @id @default(uuid())
-  firstName      String
-  lastName       String
-  patientId      String
-  dateOfBirth    DateTime
-  diseaseProfile String
-  roomNr         String
-  persciptions   Perscription[]
-  savedPatients  SavedPatient[]
-  isBaby         Boolean @default(false)
+  id              String           @id @default(uuid())
+  firstName       String
+  lastName        String
+  patientId       String
+  dateOfBirth     DateTime
+  diseaseProfile  String
+  roomNr          String
+  persciptions    Perscription[]
+  savedPatients   SavedPatient[]
+  isBaby          Boolean          @default(false)
   medicalCheckups MedicalCheckup[]
- }
- 
+}
+
 model MedicalCheckup {
   id        String   @id @default(uuid())
   notes     String
@@ -43,7 +43,7 @@ model SavedPatient {
   patientId String
   userId    String
   patient   Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
-  user      User    @relation(fields: [userId], references: [id])
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Perscription {
