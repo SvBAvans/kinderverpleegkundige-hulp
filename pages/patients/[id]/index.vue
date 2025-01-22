@@ -49,7 +49,7 @@ async function confirmDelete() {
       <div>
         <h2 class="h5 mb-1">{{ patient.firstName }} {{ patient.lastName }}</h2>
         <p>Kamernummer: {{ patient.roomNr }}</p>
-        <p class="mb-0">Geboortedatum: {{ new Date(patient.dateOfBirth).toISOString().split("T")[0] }}</p>
+        <p class="mb-0">Geboortedatum: {{ new Date(patient.dateOfBirth).toLocaleDateString() }}</p>
       </div>
     </div>
 
