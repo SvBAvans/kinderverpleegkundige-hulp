@@ -98,25 +98,6 @@ async function confirmDelete() {
 
     <div class="divider"></div>
 
-    <section class="mb-3">
-      <h3 class="h6">Behandelingen</h3>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-        anim id est laborum..
-      </p>
-    </section>
-
-    <div class="divider"></div>
-
-    <section class="mb-3">
-      <h3 class="h6">Afspraken en psychologische zorg</h3>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-        anim id est laborum..
-      </p>
-    </section>
     <button @click="confirmDelete" class="btn btn-primary w-100 mt-4">Ontsla patient</button>
   </div>
 </template>

@@ -11,7 +11,7 @@ definePageMeta({
   title: "Voeg patient toe",
 });
 
-const {data: authData} = useAuth();
+const { data: authData } = useAuth();
 
 const { data: patient } = await useFetch(`/api/patients`);
 
@@ -68,7 +68,7 @@ const filteredPatients = computed(() => {
               <p class="mb-1">
                 <strong>{{ patient.firstName }} {{ patient.lastName }}</strong>
               </p>
-              <p class="text-muted mb-0">{{ patient.dateOfBirth }}</p>
+              <p class="text-muted mb-0">{{ new Date(patient.dateOfBirth).toLocaleDateString() }}</p>
             </div>
 
             <div class="col-6 d-flex align-items-center justify-content-end">

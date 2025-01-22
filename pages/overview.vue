@@ -57,7 +57,7 @@ const { data: savedPatients } = await useFetch(`/api/patients/saved?userId=${use
               <p class="mb-1">
                 <strong>{{ patient.firstName }} {{ patient.lastName }}</strong>
               </p>
-              <p class="text-muted mb-0">{{ patient.dateOfBirth }}</p>
+              <p class="text-muted mb-0">{{ new Date(patient.dateOfBirth).toLocaleDateString() }}</p>
             </div>
 
             <div class="col-6 d-flex align-items-center justify-content-end">
